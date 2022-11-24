@@ -1,0 +1,574 @@
+
+# Gwendolyn Leong - S10223182 - P11
+# 9 August 2021
+# Prg1 Assignment
+# SimpCity
+
+# this function prints the grid of the city
+def print_grid():
+    print('     A     B     C     D  ')
+    count = 0
+    row = 0
+    for count in range(1,5):
+        print('  +-----+-----+-----+-----+') 
+        print('{} |{:^5}|{:^5}|{:^5}|{:^5}|'.format(count,grid[row][0],grid[row][1],grid[row][2],grid[row][3]))
+        row = row + 1
+    print('  +-----+-----+-----+-----+') # print bottom row
+
+    
+# this function displays the game options
+def game(highScores):
+    build_choice = 1
+    global turn
+    if choice != '2':
+        # reset turn when game restart
+        turn = 0
+        # reset grid when game restart
+        for row in range(len(grid)):
+            for col in range(len(grid[row])):
+                grid[row][col] = '     ' 
+    
+    while build_choice != '0':
+        if turn <= 15:
+            turn = turn + 1
+            print('Turn',turn)
+            print_grid()
+            first_building = random.choice(building)
+            second_building = random.choice(building)
+            # ensure that first_building and second_building is not the same
+            while first_building == second_building: 
+                if first_building == second_building:
+                    second_building = random.choice(building)
+            print('1. Build a ',first_building)
+            print('2. Build a ',second_building)
+            print('3. See remaining buildings')
+            print('4. See current score')
+            print()
+            print('5. Save game')
+            print('0. Exit to main menu')
+            build_choice = (input('Your choice? '))
+            
+            # first building choice
+            if build_choice == '1':
+                build_buildings(first_building)
+            # second building choice
+            elif build_choice == '2':
+                build_buildings(second_building)
+            # see remainding buildings
+            elif build_choice == '3':
+                turn = turn - 1
+                remainding_buildings(grid)
+            # see current score
+            elif build_choice == '4':
+                turn = turn - 1
+                current_score()
+            # save game
+            elif build_choice == '5':
+                turn = turn - 1
+                save_game(turn)
+                print('Game saved!')
+            # exit game
+            elif build_choice == '0':
+                break
+            else: 
+                turn = turn - 1
+                print('Invalid input, please try again.')
+            # turn = turn - 1 ensure that turn number doesn't change if input is not valid
+        else:
+            # turn has reached 16, show final layout
+            end_of_game(grid,highScores)
+            build_choice = '0'
+
+
+# this function performs the necessary actions if the validation failed
+def validation_failed():
+    global turn
+    turn = turn - 1
+    print('Invalid input, please try again.')
+
+    
+# this function validates the building input and build the building accordingly
+def build_buildings(building_choice):
+
+    valid_numbers = ['1','2','3','4']
+    global turn
+    result = True
+    
+    # for player to input where they are building at
+    build = input('Build where? ').upper()
+    
+    # validation for if build input is empty
+    if build == '':
+        validation_failed()
+        result = False
+    # validation for if there is no 2nd character in build input
+    elif len(build) == 1:
+        validation_failed()
+        result = False
+    # validation for if 2nd character is not a number in build input
+    elif not build[1].isnumeric():
+        validation_failed()
+        result = False
+    # validation for if number is not a valid number
+    elif build[1] not in valid_numbers:
+        validation_failed()
+        result = False
+    # validation if build input has more than 2 characters
+    elif len(build) > 2:
+        validation_failed()
+        result = False
+    # check col number of input
+    else:
+        letter = build[0]
+        if letter == 'A':
+            col_number = 0
+        elif letter == 'B':
+            col_number = 1
+        elif letter == 'C':
+            col_number = 2
+        elif letter == 'D':
+            col_number = 3
+        else:
+            validation_failed()
+            result = False
+            
+    # validation passed, check where the building is supposed to be placed    
+    if result == True:
+        row_number = int(build[1])
+        row_number = row_number - 1
+
+        # allow to put freely on turn 1
+        if turn == 1:
+            grid[row_number][col_number] = building_choice
+        # turn 2 onwards must build orthogonally adjacent to a building
+        else:
+            up_row = row_number - 1
+            up_col = col_number
+        
+            down_row = row_number + 1
+            down_col = col_number
+        
+            left_row = row_number
+            left_col = col_number - 1
+        
+            right_row = row_number
+            right_col = col_number + 1
+
+            # check if cell has building already
+            if grid[row_number][col_number]!= '     ':
+                print('There is already a building at {}'.format(build))
+                turn = turn - 1
+            # able to build
+            if up_row >= 0 and grid[up_row][up_col] != '     ':
+                grid[row_number][col_number] = building_choice
+            elif down_row <= 3 and grid[down_row][down_col] != '     ':
+                grid[row_number][col_number] = building_choice
+            elif left_col >= 0 and grid[left_row][left_col] != '     ':
+                grid[row_number][col_number] = building_choice
+            elif right_col <= 3 and grid[right_row][right_col] != '     ':
+                grid[row_number][col_number] = building_choice
+            else:
+                print('You must build next to existing building')
+                turn = turn - 1
+        
+
+# this is a function to check the number of buildings left after every turn
+def remainding_buildings(grid):
+    # number of each buildings at the start
+    hse = 8
+    fac = 8
+    shp = 8
+    hwy = 8
+    bch = 8
+    for i in range(0,4):
+        for x in range(0,4):
+
+            if grid[i][x] == 'HSE':
+                hse = hse - 1
+            elif grid[i][x] == 'FAC':
+                fac = fac - 1
+            elif grid[i][x] == 'SHP':
+                shp = shp - 1
+            elif grid[i][x] == 'HWY':
+                hwy = hwy - 1
+            elif grid[i][x] == 'BCH':
+                bch = bch - 1
+
+    print('Building           Remaining')
+    print('--------           ---------')
+    print('HSE                ',hse)
+    print('FAC                ',fac)
+    print('SHP                ',shp)
+    print('HWY                ',hwy)
+    print('BCH                ',bch)
+
+
+# this is a function that checks for adjacency for side buildings
+def check_four_directions(row,col):
+    top = ''
+    bottom = ''
+    left = ''
+    right = ''
+    
+    if row != 0:
+        top = grid[row - 1][col]         
+    if row != 3:
+        bottom = grid[row + 1][col]         
+    if col != 0:
+        left = grid[row][col - 1]       
+    if col != 3:
+        right = grid[row][col + 1]
+
+    return top , bottom , left , right
+
+
+# this is a function to check BCH scores
+def calc_bch_score(bch_scores,col):
+    #if its is in col A or D then 3 points
+    if col == 0 or col == 3:
+        bch_scores.append(3)
+    #base point is 1
+    else:
+        bch_scores.append(1) 
+
+        
+# this is a function to check FAC scores
+def calc_fac_scores(fac_scores,fac):
+    for i in range(fac):
+    # add score into list
+        # count < 4, first 4 will be based on how many FAC are there
+        if fac <= 4: 
+            fac_scores.append(fac)
+        # count > 4, first 4 is 4 points
+        elif fac > 4: 
+            fac_scores.append(4)
+            fac_scores.append(4)
+            fac_scores.append(4)
+            fac_scores.append(4)
+            fac = fac - 4
+            #subsequent FAC is 1 point
+            for x in range(fac):
+                fac_scores.append(1) 
+            break
+        
+
+# this is a function to check hse scores 
+def calc_hse_score(hse_scores,row,col):
+    # count of number of adjacent HSE or SHP
+    num_of_hse_shp = 0
+    # count of number of adjacent BCH
+    num_of_bch = 0
+    # checks for adjacency for side buildings
+    top, bottom, left, right = check_four_directions(row,col)
+                
+    if left == 'FAC' or right == 'FAC' :
+        hse_scores.append(1) # add score into list
+    else :
+        # check top
+        if top == 'HSE' or top == 'SHP':
+            # 1 point when cell is HSE or SHP
+            num_of_hse_shp = num_of_hse_shp + 1 
+        elif top == 'BCH':
+            # 2 point when cell is BCH
+            num_of_bch = num_of_bch + 2 
+                        
+        # check bottom
+        if bottom == 'HSE' or bottom == 'SHP':
+            num_of_hse_shp = num_of_hse_shp + 1
+        elif bottom =='BCH':
+            num_of_bch = num_of_bch + 2
+
+        # check right
+        if right == 'HSE' or right == 'SHP':
+            num_of_hse_shp = num_of_hse_shp + 1
+        elif right == 'BCH':
+            num_of_bch = num_of_bch + 2
+
+        # check left 
+        if left == 'HSE' or left == 'SHP':
+            num_of_hse_shp = num_of_hse_shp + 1
+        elif left == 'BCH':
+            num_of_bch = num_of_bch + 2
+            
+        # add score into list
+        hse_scores.append(num_of_hse_shp+num_of_bch)
+
+        
+# this is a function to check shp scores
+def calc_shp_score(shp_scores,row,col):
+    building_seen=[]
+    # checks for adjacency for side buildings
+    top, bottom, left, right = check_four_directions(row,col)
+    # add 1 point for every unique building adjacent to the SHP
+    if building_seen.count(left) == 0:
+        building_seen.append(left)
+    if building_seen.count(right) == 0:
+        building_seen.append(right)
+    if building_seen.count(top) == 0:
+        building_seen.append(top)
+    if building_seen.count(bottom) == 0:
+        building_seen.append(bottom)
+    # remove errors that occured
+    if building_seen.count('     ') > 0:
+        building_seen.remove('     ') 
+    if building_seen.count('') > 0:
+        building_seen.remove('')
+    # add score into list
+    shp_scores.append(len(building_seen)) 
+
+
+# this is a function to check hwy scores
+def calc_hwy_score(hwy_scores,row,col):
+    # count 1 when a HWY is seen
+    hwy_count = 1
+    # check towards the right side for the row for any HWYs
+    for i in range(3 - col):
+        next_cell = grid[row][col + i + 1]
+        if next_cell == 'HWY':
+            hwy_count = hwy_count + 1
+        else:
+            break
+    #check towards the left side for the row for any HWYs
+    for i in range(col):
+        next_cell = grid[row][col - i - 1]
+        if next_cell == 'HWY':
+            hwy_count = hwy_count + 1
+        else:
+            break
+    # add score into list
+    hwy_scores.append(hwy_count) 
+
+
+# this is a function to display scores for all buildings
+def display_scores(building_scores,cell):
+    output = ''
+    # if there is a score for the building, show workings and tabulate total score
+    if len(building_scores) > 0:
+        for i in range(1 , len(building_scores)):
+            output = output + ' + ' + str(building_scores[i]) 
+        print('{}: '.format(cell) + str(building_scores[0]) + output + ' = ' + str(sum(building_scores)))
+    # if there is no score for the building 
+    else:
+        print('{}: 0 '.format(cell))
+
+            
+# this is a function to check the current score for every building
+def current_score():
+    bch_scores = []
+    fac_scores = []
+    hse_scores = []
+    shp_scores = []
+    hwy_scores = []
+    fac = 0
+    
+    # access the grid with the row and col
+    for row in range(0,4):
+        for col in range(0,4):
+            # save whatever is that is on the grid for the row and col into cell
+            cell = grid[row][col]
+
+            # to check if grid has BCH
+            if cell == "BCH" : 
+                calc_bch_score(bch_scores,col)
+
+            # to check if grid has FAC
+            if cell == 'FAC': 
+                fac = fac + 1
+
+            # to check if grid has HSE
+            if cell == 'HSE': 
+                calc_hse_score(hse_scores,row,col)
+                
+            # to check if grid has SHP
+            if cell == 'SHP': 
+                calc_shp_score(shp_scores,row,col)
+
+            # to check if grid has HWY
+            if cell == 'HWY': 
+                calc_hwy_score(hwy_scores,row,col)
+
+    # FAC scores needs to be calculated from the number of FACs
+    calc_fac_scores(fac_scores,fac)
+
+    # display scores
+    # HSE scores
+    display_scores(hse_scores,'HSE')
+
+    # FAC scores
+    display_scores(fac_scores,'FAC')
+
+    # SHP scores
+    display_scores(shp_scores,'SHP')
+
+    # HWY scores
+    display_scores(hwy_scores,'HWY')
+    
+    # BCH scores
+    display_scores(bch_scores,'BCH')
+
+    # total score
+    total_score = sum(hse_scores + fac_scores + shp_scores + hwy_scores + bch_scores)
+    print('Total score:',str(total_score))
+
+    return total_score
+
+     
+# this is a function to save the game into SimpCity txt file             
+def save_game(turn):
+    datafile = open('SimpCity.txt','w')
+    datafile.write(str(turn) + '\n')
+    for row in range(0,4):
+        data = ''
+        for col in range(0,4):
+            data = data + grid[row][col] + ','
+        datafile.write(data + '\n')
+    datafile.close()
+
+    
+# this is a function to read game from SimpCity txt file
+def load_game():
+    global turn
+    # check if file is available
+    datafile = open('SimpCity.txt','a')
+    datafile.close()
+    
+    # read game from file
+    datafile=open('SimpCity.txt','r')
+    turn=int(datafile.readline())
+    row=0
+    for line in datafile:
+        line=line.strip('\n')
+        datalist=line.split(',')
+        for col in range(0,4):
+            grid[row][col]=datalist[col]
+        row=row+1
+    datafile.close()
+
+
+# this is a function to save scores to HighScore txt file
+def save_high_scores(highScores):
+    datafile = open('HighScores.txt','w')
+    for i in range(len(highScores)):
+        player = highScores[i]
+        datafile.write( player[0] + ',' + str(player[1])+'\n')
+    datafile.close()
+
+
+# this is a function to read high score from HighScores file
+def load_high_scores():
+    scores=[]
+    
+    # check if file is available
+    datafile = open('HighScores.txt','a')
+    datafile.close()
+
+    # read high scores from file
+    datafile = open('HighScores.txt','r')
+    for line in datafile:
+        line = line.strip('\n')
+        score_list=line.split(',')
+        scores.append(score_list)
+        
+    for i in range(len(scores)):
+        scores[i][1] = int(scores[i][1])
+        
+    datafile.close()
+    return scores
+
+
+# this is a function to show the end of game     
+def end_of_game(grid,highScores):
+    pos = 1
+    print('Final layout of Simp City:')
+    print_grid()
+
+    total_score = current_score()
+    
+    for player in highScores:
+        if player[1] >= total_score:
+            pos = pos + 1
+        else:
+            break
+
+    # in highscore board 
+    if pos < 10: 
+        print('Congratulations! You made the high score board at position {}!'.format(pos))
+        name = input('Please enter your name (max 20 chars): ')
+        while len(name) > 20:
+            print('You have exceeded to max characters')
+            name=input('Please enter your name (max 20 chars): ')
+        new_player = []
+        #add player to list
+        new_player.append(name)
+        #add player's score to list
+        new_player.append(total_score)
+        #add player and score into position in highscore board
+        highScores.insert(pos-1,new_player) 
+        if len(highScores) == 11:
+            highScores.remove(highScores[-1])
+        #save new high scores
+        save_high_scores(highScores)
+        #show high scores
+        display_high_scores(highScores) 
+         
+    else:
+        print('Your score is ',total_score)
+
+       
+# this function will show the highest scores of up to 10 players
+# with the name and the score for the player in desc order
+def display_high_scores(scores):
+
+    print()
+    print('--------- HIGH SCORES ---------')
+    print('Pos Player                Score')
+    print('--- ------                -----')
+    for i in range(len(scores)):
+        print('{:>2}. {:<25}{}'.format(i + 1,scores[i][0],scores[i][1]))
+    print('-------------------------------')
+
+
+# main program
+import random
+
+# global variables
+building = ['BCH','FAC','HSE','SHP','HWY']
+grid = [ 
+   [ '     ','     ','     ','     '] , 
+   [ '     ','     ','     ','     '] , 
+   [ '     ','     ','     ','     '] , 
+   [ '     ','     ','     ','     '] 
+]
+
+highScores = load_high_scores()
+turn = 0
+# main menu
+print('Welcome, mayor of Simp City!')
+print('----------------------------')
+choice = 1
+while choice != '0':
+    print('1. Start new game')
+    print('2. Load saved game')
+    print('3. Show high scores')
+    print()
+    print('0. Exit')
+    choice = (input('Your choice? '))
+
+    if choice == '1':
+        game(highScores)
+    elif choice == '2':
+        try:
+            load_game()
+            game(highScores)
+        # to ensure that there is a saved game txt file
+        except ValueError:
+            print('No saved game found')
+    elif choice == '3':
+        display_high_scores(highScores)
+    elif choice == '0':
+        print('Goodbye, see you again')
+    else:
+        print('Invalid option, please try again')
+
+
+
