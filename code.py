@@ -406,9 +406,9 @@ def current_score():
 def save_game(turn):
     datafile = open('SimpCity.txt','w')
     datafile.write(str(turn) + '\n')
-    for row in range(0,4):
+    for row in range(0,20):
         data = ''
-        for col in range(0,4):
+        for col in range(0,20):
             data = data + grid[row][col] + ','
         datafile.write(data + '\n')
     datafile.close()
@@ -428,7 +428,7 @@ def load_game():
     for line in datafile:
         line=line.strip('\n')
         datalist=line.split(',')
-        for col in range(0,4):
+        for col in range(0,20):
             grid[row][col]=datalist[col]
         row=row+1
     datafile.close()
@@ -532,8 +532,8 @@ grid = [
 highScores = load_high_scores()
 turn = 0
 # main menu
-print('Welcome, mayor of Simp City!')
-print('----------------------------')
+print('Welcome to Ngee Ann City!')
+print('-------------------------')
 choice = 1
 while choice != '0':
     print('1. Start new game')
