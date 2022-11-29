@@ -1,11 +1,8 @@
 
-# Gwendolyn Leong - S10223182 - P11
-# 9 August 2021
-# Prg1 Assignment
-# SimpCity
+import random
+1
 
 # this function prints the grid of the city
-import random
 
 
 def print_grid():
@@ -218,19 +215,19 @@ def remainding_buildings(grid):
     shp = 8
     hwy = 8
     bch = 8
-    for i in range(0, 20):
-        for x in range(0, 20):
+    for i in range(0, 4):
+        for x in range(0, 4):
 
-            if grid[i][x] == 'HSE':
-                hse = hse - 1
-            elif grid[i][x] == 'FAC':
-                fac = fac - 1
-            elif grid[i][x] == 'SHP':
-                shp = shp - 1
-            elif grid[i][x] == 'HWY':
-                hwy = hwy - 1
-            elif grid[i][x] == 'BCH':
-                bch = bch - 1
+            if grid[i][x] == 'R':
+                coin = coin - 1
+            elif grid[i][x] == 'I':
+                coin = coin - 1
+            elif grid[i][x] == 'C':
+                coin = coin - 1
+            elif grid[i][x] == 'O':
+                coin = coin - 1
+            elif grid[i][x] == '*':
+                coin = coin - 1
 
     print('Building           Remaining')
     print('--------           ---------')
@@ -479,7 +476,7 @@ def load_game():
     for line in datafile:
         line = line.strip('\n')
         datalist = line.split(',')
-        for col in range(0, 20):
+        for col in range(0, 4):
             grid[row][col] = datalist[col]
         row = row+1
     datafile.close()
@@ -618,8 +615,8 @@ grid = [
 highScores = load_high_scores()
 turn = 0
 # main menu
-print('Welcome, mayor of Simp City!')
-print('----------------------------')
+print('Welcome to Ngee Ann City!')
+print('-------------------------')
 choice = 1
 while choice != '0':
     print('1. Start new game')
