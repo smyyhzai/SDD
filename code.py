@@ -380,17 +380,16 @@ def calc_hwy_score(hwy_scores, row, col):
     hwy_scores.append(hwy_count)
 
 # this is a function to check rod scores
+# 1 point per connected road
 
 
 def calc_rod_score(rod_scores, row, col):
-    # 1 point per connected road
-    rod_count = 1
-    # check the row for any *s
+    rod_count = 0
     # check towards the right side
     for i in range(19 - col):
         next_cell = grid[row][col + i + 1]
         if next_cell == '*':
-            rod_count = rod_scores + 1
+            rod_count = rod_count + 1
         else:
             break
     # check towards the left side
