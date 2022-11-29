@@ -1,6 +1,6 @@
 
 import random
-1
+
 
 # this function prints the grid of the city
 
@@ -92,8 +92,7 @@ def validation_failed():
 # this function validates the building input and build the building accordingly
 def build_buildings(building_choice):
 
-    valid_numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9',
-                     '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
+    valid_numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
     global turn
     result = True
 
@@ -104,22 +103,27 @@ def build_buildings(building_choice):
     if build == '':
         validation_failed()
         result = False
+
     # validation for if there is no 2nd character in build input
     elif len(build) == 1:
         validation_failed()
         result = False
+
     # validation for if 2nd character is not a number in build input
     elif not build[1].isnumeric():
         validation_failed()
         result = False
+
     # validation for if number is not a valid number
     elif build[1] not in valid_numbers:
         validation_failed()
         result = False
-    # validation if build input has more than 2 characters
-    elif len(build) > 2:
+
+    # validation if build input has more than 3 characters
+    elif len(build) > 3:
         validation_failed()
         result = False
+
     # check col number of input
     else:
         letter = build[0]
@@ -166,10 +170,11 @@ def build_buildings(building_choice):
         else:
             validation_failed()
             result = False
+            print('6')
 
     # validation passed, check where the building is supposed to be placed
     if result == True:
-        row_number = int(build[1])
+        row_number = int(build[1:])
         row_number = row_number - 1
 
         # allow to put freely on turn 1
