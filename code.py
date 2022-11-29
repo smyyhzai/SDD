@@ -92,7 +92,8 @@ def validation_failed():
 # this function validates the building input and build the building accordingly
 def build_buildings(building_choice):
 
-    valid_numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
+    valid_numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9',
+                     '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
     global turn
     result = True
 
@@ -378,6 +379,30 @@ def calc_hwy_score(hwy_scores, row, col):
     # add score into list
     hwy_scores.append(hwy_count)
 
+# this is a function to check rod scores
+
+
+def calc_rod_score(rod_scores, row, col):
+    # 1 point per connected road
+    rod_count = 1
+    # check the row for any *s
+    # check towards the right side
+    for i in range(19 - col):
+        next_cell = grid[row][col + i + 1]
+        if next_cell == '*':
+            rod_count = rod_scores + 1
+        else:
+            break
+    # check towards the left side
+    for i in range(col):
+        next_cell = grid[row][col - i - 1]
+        if next_cell == '*':
+            rod_count = rod_count + 1
+        else:
+            break
+    # add score into list
+    rod_scores.append(rod_count)
+
 
 # this is a function to display scores for all buildings
 def display_scores(building_scores, cell):
@@ -400,6 +425,7 @@ def current_score():
     hse_scores = []
     shp_scores = []
     hwy_scores = []
+    rod_scores = []
     fac = 0
 
     # access the grid with the row and col
@@ -428,6 +454,10 @@ def current_score():
             if cell == 'HWY':
                 calc_hwy_score(hwy_scores, row, col)
 
+            # to check if grid has *
+            if cell == '*':
+                calc_rod_score(rod_scores, row, col)
+
     # FAC scores needs to be calculated from the number of FACs
     calc_fac_scores(fac_scores, fac)
 
@@ -447,9 +477,14 @@ def current_score():
     # BCH scores
     display_scores(bch_scores, 'BCH')
 
+    # * scores
+    display_scores(rod_scores, '*')
+
+    #
+
     # total score
     total_score = sum(hse_scores + fac_scores +
-                      shp_scores + hwy_scores + bch_scores)
+                      shp_scores + hwy_scores + bch_scores + rod_scores)
     print('Total score:', str(total_score))
 
     return total_score
@@ -573,7 +608,7 @@ def display_high_scores(scores):
 # main program
 
 # global variables
-building = ['BCH', 'FAC', 'HSE', 'SHP', 'HWY']
+building = ['BCH', 'FAC', 'HSE', 'SHP', 'HWY', '*']
 grid = [
     ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
