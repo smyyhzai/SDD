@@ -402,6 +402,36 @@ def calc_rod_score(rod_scores, row, col):
     # add score into list
     rod_scores.append(rod_count)
 
+# this is a function to check residential scores
+
+def calc_res_score(res_scores, row, col):
+    top, bottom, left, right = check_four_directions(row, col)
+    res_counts = 0
+    if top == "I" or bottom == "I" or left == "I" or right == "I":
+        res_counts += 1
+    else:
+        # check top for R or C
+        if top == "R" or top == "C":
+            res_counts += 1
+        elif top == "O":
+            res_counts += 2
+        
+        if bottom == "R" or bottom == "C":
+            res_counts += 1
+        elif bottom == "O":
+            res_counts += 2
+        
+        if left == "R" or left == "C":
+            res_counts += 1
+        elif left == "O":
+            res_counts += 2
+            
+        if right == "R" or right == "C":
+            res_counts += 1
+        elif right == "O":
+            res_counts += 2
+    #add to score list
+    res_scores.append(res_counts)
 
 # this is a function to display scores for all buildings
 def display_scores(building_scores, cell):
@@ -425,6 +455,7 @@ def current_score():
     shp_scores = []
     hwy_scores = []
     rod_scores = []
+    res_scores = []
     fac = 0
 
     # access the grid with the row and col
@@ -456,6 +487,10 @@ def current_score():
             # to check if grid has *
             if cell == '*':
                 calc_rod_score(rod_scores, row, col)
+                
+            #to check if grid has R
+            if cell == 'R':
+                calc_res_score(res_scores, row, col)
 
     # FAC scores needs to be calculated from the number of FACs
     calc_fac_scores(fac_scores, fac)
@@ -479,11 +514,14 @@ def current_score():
     # * scores
     display_scores(rod_scores, '*')
 
+    # R scores
+    display_scores(res_scores, 'R')
+
     #
 
     # total score
-    total_score = sum(hse_scores + fac_scores +
-                      shp_scores + hwy_scores + bch_scores + rod_scores)
+    total_score = sum(hse_scores + fac_scores + shp_scores + hwy_scores
+                      + bch_scores + rod_scores + res_scores)
     print('Total score:', str(total_score))
 
     return total_score
@@ -607,7 +645,7 @@ def display_high_scores(scores):
 # main program
 
 # global variables
-building = ['BCH', 'FAC', 'HSE', 'SHP', 'HWY', '*']
+building = ['BCH', 'FAC', 'HSE', 'SHP', 'HWY', '*', 'R']
 grid = [
     ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
