@@ -1,8 +1,5 @@
 
-# Gwendolyn Leong - S10223182 - P11
-# 9 August 2021
-# Prg1 Assignment
-# SimpCity
+1
 
 # this function prints the grid of the city
 def print_grid():
@@ -175,32 +172,24 @@ def build_buildings(building_choice):
 # this is a function to check the number of buildings left after every turn
 def remainding_buildings(grid):
     # number of each buildings at the start
-    hse = 8
-    fac = 8
-    shp = 8
-    hwy = 8
-    bch = 8
-    for i in range(0,4):
-        for x in range(0,4):
+    coin = 16
+    for i in range(0,20):
+        for x in range(0,20):
 
-            if grid[i][x] == 'HSE':
-                hse = hse - 1
-            elif grid[i][x] == 'FAC':
-                fac = fac - 1
-            elif grid[i][x] == 'SHP':
-                shp = shp - 1
-            elif grid[i][x] == 'HWY':
-                hwy = hwy - 1
-            elif grid[i][x] == 'BCH':
-                bch = bch - 1
+            if grid[i][x] == 'R':
+                coin = coin - 1
+            elif grid[i][x] == 'I':
+                coin = coin - 1
+            elif grid[i][x] == 'C':
+                coin = coin - 1
+            elif grid[i][x] == 'O':
+                coin = coin - 1
+            elif grid[i][x] == '*':
+                coin = coin - 1
 
-    print('Building           Remaining')
-    print('--------           ---------')
-    print('HSE                ',hse)
-    print('FAC                ',fac)
-    print('SHP                ',shp)
-    print('HWY                ',hwy)
-    print('BCH                ',bch)
+    print('Total Coins           Remaining')
+    print('-----------           ---------')
+    print('16                  ',coin)
 
 
 # this is a function that checks for adjacency for side buildings
@@ -212,11 +201,11 @@ def check_four_directions(row,col):
     
     if row != 0:
         top = grid[row - 1][col]         
-    if row != 3:
+    if row != 19:
         bottom = grid[row + 1][col]         
     if col != 0:
         left = grid[row][col - 1]       
-    if col != 3:
+    if col != 19:
         right = grid[row][col + 1]
 
     return top , bottom , left , right
