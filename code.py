@@ -11,7 +11,11 @@ def print_grid():
     row = 0
     for count in range(1, 21):
         print('   +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+')
-        print('{} |{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|'.format(count, grid[row][0], grid[row][1], grid[row][2], grid[row][3], grid[row][4], grid[row][5], grid[row][6], grid[row][7], grid[row]
+        if count < 10:
+            print('{}  1|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|'.format(count, grid[row][0], grid[row][1], grid[row][2], grid[row][3], grid[row][4], grid[row][5], grid[row][6], grid[row][7], grid[row]
+              [8], grid[row][9], grid[row][10], grid[row][11], grid[row][12], grid[row][13], grid[row][14], grid[row][15], grid[row][16], grid[row][17], grid[row][18], grid[row][19]))
+        else:
+            print('{} |{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|'.format(count, grid[row][0], grid[row][1], grid[row][2], grid[row][3], grid[row][4], grid[row][5], grid[row][6], grid[row][7], grid[row]
               [8], grid[row][9], grid[row][10], grid[row][11], grid[row][12], grid[row][13], grid[row][14], grid[row][15], grid[row][16], grid[row][17], grid[row][18], grid[row][19]))
         row = row + 1
     # print bottom row
