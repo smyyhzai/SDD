@@ -649,7 +649,7 @@ def display_high_scores(scores):
 # main program
 
 # global variables
-building = ['BCH', 'FAC', 'HSE', 'SHP', 'HWY', '*', 'R']
+building = ['O', 'C', 'I', '*', 'R']
 grid = [
     ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
