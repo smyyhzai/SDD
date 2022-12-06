@@ -45,8 +45,31 @@ def game(highScores):
             while first_building == second_building:
                 if first_building == second_building:
                     second_building = random.choice(building)
-            print('1. Build a ', first_building)
-            print('2. Build a ', second_building)
+
+            if first_building == 'R':
+                first_building_name = 'Residential (R)'
+            elif first_building == 'I':
+                first_building_name = 'Industry (I)'
+            elif first_building == 'C':          
+                first_building_name = 'Commercial (C)'
+            elif first_building == 'O':
+                first_building_name = 'Park (O)'
+            elif first_building == '*':
+                first_building_name = 'Road (*)'
+            
+            if second_building == 'R':
+                second_building_name = 'Residential (R)'
+            elif second_building == 'I':
+                second_building_name = 'Industry (I)'
+            elif second_building == 'C':
+                second_building_name = 'Commercial (C)'
+            elif second_building == 'O':
+                second_building_name = 'Park (O)'
+            elif second_building == '*':
+                second_building_name = 'Road (*)'
+
+            print('1. Build a', first_building_name)
+            print('2. Build a', second_building_name)
             print('3. See remaining buildings')
             print('4. See current score')
             print()
