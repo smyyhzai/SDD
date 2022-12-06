@@ -13,10 +13,10 @@ def print_grid():
         print('   +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+')
         if count < 10:
             print('{}  |{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|'.format(count, grid[row][0], grid[row][1], grid[row][2], grid[row][3], grid[row][4], grid[row][5], grid[row][6], grid[row][7], grid[row]
-              [8], grid[row][9], grid[row][10], grid[row][11], grid[row][12], grid[row][13], grid[row][14], grid[row][15], grid[row][16], grid[row][17], grid[row][18], grid[row][19]))
+                                                                                                                                                         [8], grid[row][9], grid[row][10], grid[row][11], grid[row][12], grid[row][13], grid[row][14], grid[row][15], grid[row][16], grid[row][17], grid[row][18], grid[row][19]))
         else:
             print('{} |{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|'.format(count, grid[row][0], grid[row][1], grid[row][2], grid[row][3], grid[row][4], grid[row][5], grid[row][6], grid[row][7], grid[row]
-              [8], grid[row][9], grid[row][10], grid[row][11], grid[row][12], grid[row][13], grid[row][14], grid[row][15], grid[row][16], grid[row][17], grid[row][18], grid[row][19]))
+                                                                                                                                                        [8], grid[row][9], grid[row][10], grid[row][11], grid[row][12], grid[row][13], grid[row][14], grid[row][15], grid[row][16], grid[row][17], grid[row][18], grid[row][19]))
         row = row + 1
     # print bottom row
     print('   +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+')
@@ -26,27 +26,56 @@ def print_grid():
 def game(highScores):
     build_choice = 1
     global turn
+    global coin
+
     if choice != '2':
         # reset turn when game restart
         turn = 0
+        coin = 16
         # reset grid when game restart
         for row in range(len(grid)):
             for col in range(len(grid[row])):
                 grid[row][col] = '   '
 
     while build_choice != '0':
-        if turn <= 15:
+        if coin != 0:
             turn = turn + 1
-            print('Turn', turn)
-            print_grid()
+            coin = 16 - turn 
+            #print_grid()
             first_building = random.choice(building)
             second_building = random.choice(building)
             # ensure that first_building and second_building is not the same
             while first_building == second_building:
                 if first_building == second_building:
                     second_building = random.choice(building)
-            print('1. Build a ', first_building)
-            print('2. Build a ', second_building)
+
+            if first_building == 'R':
+                first_building_name = 'Residential (R)'
+            elif first_building == 'I':
+                first_building_name = 'Industry (I)'
+            elif first_building == 'C':
+                first_building_name = 'Commercial (C)'
+            elif first_building == 'O':
+                first_building_name = 'Park (O)'
+            elif first_building == '*':
+                first_building_name = 'Road (*)'
+
+            if second_building == 'R':
+                second_building_name = 'Residential (R)'
+            elif second_building == 'I':
+                second_building_name = 'Industry (I)'
+            elif second_building == 'C':
+                second_building_name = 'Commercial (C)'
+            elif second_building == 'O':
+                second_building_name = 'Park (O)'
+            elif second_building == '*':
+                second_building_name = 'Road (*)'
+
+            print('Turn', turn)
+            print('Remaining Coins:', coin)
+            print()
+            print('1. Build a', first_building_name)
+            print('2. Build a', second_building_name)
             print('3. See remaining buildings')
             print('4. See current score')
             print()
@@ -78,7 +107,7 @@ def game(highScores):
                 break
             else:
                 turn = turn - 1
-                print('Invalid input, please try again.')
+                print('Invalid input, please try again.\n')
             # turn = turn - 1 ensure that turn number doesn't change if input is not valid
         else:
             # turn has reached 16, show final layout
@@ -90,7 +119,7 @@ def game(highScores):
 def validation_failed():
     global turn
     turn = turn - 1
-    print('Invalid input, please try again.')
+    print('Invalid input, please try again.\n')
 
 
 # this function validates the building input and build the building accordingly
@@ -99,6 +128,7 @@ def build_buildings(building_choice):
     valid_numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9',
                      '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
     global turn
+    global coin
     result = True
 
     # for player to input where they are building at
@@ -181,10 +211,10 @@ def build_buildings(building_choice):
     if result == True:
         row_number = int(build[1:])
         row_number = row_number - 1
-
         # allow to put freely on turn 1
         if turn == 1:
             grid[row_number][col_number] = building_choice
+            print_grid()
         # turn 2 onwards must build orthogonally adjacent to a building
         else:
             up_row = row_number - 1
@@ -201,19 +231,23 @@ def build_buildings(building_choice):
 
             # check if cell has building already
             if grid[row_number][col_number] != '   ':
-                print('There is already a building at {}'.format(build))
+                print('There is already a building at {}\n'.format(build))
                 turn = turn - 1
             # able to build
             if up_row >= 0 and grid[up_row][up_col] != '   ':
                 grid[row_number][col_number] = building_choice
+                print_grid()
             elif down_row <= 19 and grid[down_row][down_col] != '   ':
                 grid[row_number][col_number] = building_choice
+                print_grid()
             elif left_col >= 0 and grid[left_row][left_col] != '   ':
                 grid[row_number][col_number] = building_choice
+                print_grid()
             elif right_col <= 19 and grid[right_row][right_col] != '   ':
                 grid[row_number][col_number] = building_choice
+                print_grid()
             else:
-                print('You must build next to existing building')
+                print('You must build next to existing building\n')
                 turn = turn - 1
 
 
@@ -246,6 +280,7 @@ def remainding_buildings(grid):
     print('SHP                ', shp)
     print('HWY                ', hwy)
     print('BCH                ', bch)
+
 
 
 # this is a function that checks for adjacency for side buildings
@@ -408,6 +443,7 @@ def calc_rod_score(rod_scores, row, col):
 
 # this is a function to check residential scores
 
+
 def calc_res_score(res_scores, row, col):
     top, bottom, left, right = check_four_directions(row, col)
     res_counts = 0
@@ -419,25 +455,27 @@ def calc_res_score(res_scores, row, col):
             res_counts += 1
         elif top == "O":
             res_counts += 2
-        
+
         if bottom == "R" or bottom == "C":
             res_counts += 1
         elif bottom == "O":
             res_counts += 2
-        
+
         if left == "R" or left == "C":
             res_counts += 1
         elif left == "O":
             res_counts += 2
-            
+
         if right == "R" or right == "C":
             res_counts += 1
         elif right == "O":
             res_counts += 2
-    #add to score list
+    # add to score list
     res_scores.append(res_counts)
 
 # this is a function to display scores for all buildings
+
+
 def display_scores(building_scores, cell):
     output = ''
     # if there is a score for the building, show workings and tabulate total score
@@ -491,8 +529,8 @@ def current_score():
             # to check if grid has *
             if cell == '*':
                 calc_rod_score(rod_scores, row, col)
-                
-            #to check if grid has R
+
+            # to check if grid has R
             if cell == 'R':
                 calc_res_score(res_scores, row, col)
 
@@ -597,7 +635,7 @@ def load_high_scores():
 # this is a function to show the end of game
 def end_of_game(grid, highScores):
     pos = 1
-    print('Final layout of Simp City:')
+    print('Final layout of Ngee Ann City:')
     print_grid()
 
     total_score = current_score()
@@ -651,45 +689,45 @@ def display_high_scores(scores):
 # global variables
 building = ['O', 'C', 'I', '*', 'R']
 grid = [
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
 ]
 
@@ -708,10 +746,12 @@ while choice != '0':
     choice = (input('Your choice? '))
 
     if choice == '1':
+        print_grid()
         game(highScores)
     elif choice == '2':
         try:
             load_game()
+            print_grid()
             game(highScores)
         # to ensure that there is a saved game txt file
         except ValueError:
