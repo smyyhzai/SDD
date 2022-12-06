@@ -41,7 +41,7 @@ def game(highScores):
         if coin != 0:
             turn = turn + 1
             coin = 16 - turn 
-            print_grid()
+            #print_grid()
             first_building = random.choice(building)
             second_building = random.choice(building)
             # ensure that first_building and second_building is not the same
@@ -107,7 +107,7 @@ def game(highScores):
                 break
             else:
                 turn = turn - 1
-                print('Invalid input, please try again.')
+                print('Invalid input, please try again.\n')
             # turn = turn - 1 ensure that turn number doesn't change if input is not valid
         else:
             # turn has reached 16, show final layout
@@ -119,7 +119,7 @@ def game(highScores):
 def validation_failed():
     global turn
     turn = turn - 1
-    print('Invalid input, please try again.')
+    print('Invalid input, please try again.\n')
 
 
 # this function validates the building input and build the building accordingly
@@ -231,7 +231,7 @@ def build_buildings(building_choice):
 
             # check if cell has building already
             if grid[row_number][col_number] != '   ':
-                print('There is already a building at {}'.format(build))
+                print('There is already a building at {}\n'.format(build))
                 turn = turn - 1
             # able to build
             if up_row >= 0 and grid[up_row][up_col] != '   ':
@@ -247,7 +247,7 @@ def build_buildings(building_choice):
                 grid[row_number][col_number] = building_choice
                 print_grid()
             else:
-                print('You must build next to existing building')
+                print('You must build next to existing building\n')
                 turn = turn - 1
 
 
@@ -689,52 +689,52 @@ def display_high_scores(scores):
 # global variables
 building = ['O', 'C', 'I', '*', 'R']
 grid = [
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
         '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
-    ['   ', '    ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
+    ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
 ]
 
 highScores = load_high_scores()
 turn = 0
 # main menu
-print('Welcome to Ngee Ann City!')
+print('Welcome to Simp City!')
 print('-------------------------')
 choice = 1
 while choice != '0':
