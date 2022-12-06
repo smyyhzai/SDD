@@ -37,8 +37,8 @@ def game(highScores):
     while build_choice != '0':
         if turn <= 15:
             turn = turn + 1
-            print('Turn', turn)
-            print_grid()
+            print('\nTurn', turn)
+            #print_grid()
             first_building = random.choice(building)
             second_building = random.choice(building)
             # ensure that first_building and second_building is not the same
@@ -204,10 +204,10 @@ def build_buildings(building_choice):
     if result == True:
         row_number = int(build[1:])
         row_number = row_number - 1
-
         # allow to put freely on turn 1
         if turn == 1:
             grid[row_number][col_number] = building_choice
+            print_grid()
         # turn 2 onwards must build orthogonally adjacent to a building
         else:
             up_row = row_number - 1
@@ -229,12 +229,16 @@ def build_buildings(building_choice):
             # able to build
             if up_row >= 0 and grid[up_row][up_col] != '   ':
                 grid[row_number][col_number] = building_choice
+                print_grid()
             elif down_row <= 19 and grid[down_row][down_col] != '   ':
                 grid[row_number][col_number] = building_choice
+                print_grid()
             elif left_col >= 0 and grid[left_row][left_col] != '   ':
                 grid[row_number][col_number] = building_choice
+                print_grid()
             elif right_col <= 19 and grid[right_row][right_col] != '   ':
                 grid[row_number][col_number] = building_choice
+                print_grid()
             else:
                 print('You must build next to existing building')
                 turn = turn - 1
@@ -731,10 +735,12 @@ while choice != '0':
     choice = (input('Your choice? '))
 
     if choice == '1':
+        print_grid()
         game(highScores)
     elif choice == '2':
         try:
             load_game()
+            print_grid()
             game(highScores)
         # to ensure that there is a saved game txt file
         except ValueError:
