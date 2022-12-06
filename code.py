@@ -635,7 +635,7 @@ def load_high_scores():
 # this is a function to show the end of game
 def end_of_game(grid, highScores):
     pos = 1
-    print('Final layout of Simp City:')
+    print('Final layout of Ngee Ann City:')
     print_grid()
 
     total_score = current_score()
@@ -734,7 +734,7 @@ grid = [
 highScores = load_high_scores()
 turn = 0
 # main menu
-print('Welcome to Simp City!')
+print('Welcome to Ngee Ann City!')
 print('-------------------------')
 choice = 1
 while choice != '0':
