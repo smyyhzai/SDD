@@ -26,18 +26,21 @@ def print_grid():
 def game(highScores):
     build_choice = 1
     global turn
+    global coin
+
     if choice != '2':
         # reset turn when game restart
         turn = 0
+        coin = 16
         # reset grid when game restart
         for row in range(len(grid)):
             for col in range(len(grid[row])):
                 grid[row][col] = '   '
 
     while build_choice != '0':
-        if turn <= 15:
+        if coin != 0:
             turn = turn + 1
-
+            coin = 16 - turn 
             print_grid()
             first_building = random.choice(building)
             second_building = random.choice(building)
@@ -69,7 +72,8 @@ def game(highScores):
                 second_building_name = 'Road (*)'
 
             print('Turn', turn)
-            print('Remaining Coins: ', turn)
+            print('Remaining Coins:', coin)
+            print()
             print('1. Build a', first_building_name)
             print('2. Build a', second_building_name)
             print('3. See remaining buildings')
@@ -124,6 +128,7 @@ def build_buildings(building_choice):
     valid_numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9',
                      '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
     global turn
+    global coin
     result = True
 
     # for player to input where they are building at
@@ -271,6 +276,7 @@ def remainding_buildings(grid):
     print('SHP                ', shp)
     print('HWY                ', hwy)
     print('BCH                ', bch)
+
 
 
 # this is a function that checks for adjacency for side buildings
