@@ -76,11 +76,10 @@ def game(highScores):
             print()
             print('1. Build a', first_building_name)
             print('2. Build a', second_building_name)
-            print('3. See remaining buildings')
-            print('4. See current score')
-            print()
-            print('5. Save game')
+
+            print('3. Save game')
             print('0. Exit to main menu')
+            print()
             build_choice = (input('Your choice? '))
 
             # first building choice
@@ -89,16 +88,8 @@ def game(highScores):
             # second building choice
             elif build_choice == '2':
                 build_buildings(second_building)
-            # see remainding buildings
-            elif build_choice == '3':
-                turn = turn - 1
-                remainding_buildings(grid)
-            # see current score
-            elif build_choice == '4':
-                turn = turn - 1
-                current_score()
             # save game
-            elif build_choice == '5':
+            elif build_choice == '3':
                 turn = turn - 1
                 save_game(turn)
                 print('Game saved!')
