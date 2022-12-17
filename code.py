@@ -27,6 +27,7 @@ def game(highScores):
     build_choice = 1
     global turn
     global coin
+    total_score = current_score()
 
     if choice != '2':
         # reset turn when game restart
@@ -71,13 +72,16 @@ def game(highScores):
             elif second_building == '*':
                 second_building_name = 'Road (*)'
 
-            print('Turn', turn)
-            print('Remaining Coins:', coin)
+
+            print("Turn:  {}  Point:  {}  Coin:  {}".format(turn, total_score, coin))
             print()
+            print("Options:")
+            print('--------')
             print('1. Build a', first_building_name)
             print('2. Build a', second_building_name)
-
+            print()
             print('3. Save game')
+            print('4. Show score breakdown')
             print('0. Exit to main menu')
             print()
             build_choice = (input('Your choice? '))
@@ -93,6 +97,8 @@ def game(highScores):
                 turn = turn - 1
                 save_game(turn)
                 print('Game saved!')
+            elif build_choice == '4':
+                current_score()
             # exit game
             elif build_choice == '0':
                 break
@@ -464,6 +470,23 @@ def calc_res_score(res_scores, row, col):
     # add to score list
     res_scores.append(res_counts)
 
+def calc_par_score(par_scores, row, col):
+    par_counts = 0
+    # checks for adjacency for side buildings
+    top, bottom, left, right = check_four_directions(row, col)
+    # add 1 point for every unique building adjacent to the park
+    if top == "O":
+        par_counts += 1
+    if bottom == "O":
+        par_counts += 1
+    if left == "O":
+        par_counts += 1
+    if right == "O":
+        par_counts += 1
+   
+    # add score into list
+    par_scores.append(par_counts)
+
 # this is a function to display scores for all buildings
 
 
@@ -489,6 +512,7 @@ def current_score():
     hwy_scores = []
     rod_scores = []
     res_scores = []
+    par_scores = []
     fac = 0
 
     # access the grid with the row and col
@@ -525,6 +549,10 @@ def current_score():
             if cell == 'R':
                 calc_res_score(res_scores, row, col)
 
+            # to check if grid has O
+            if cell == 'O':
+                calc_par_score(par_scores, row, col)
+
     # FAC scores needs to be calculated from the number of FACs
     calc_fac_scores(fac_scores, fac)
 
@@ -550,11 +578,12 @@ def current_score():
     # R scores
     display_scores(res_scores, 'R')
 
-    #
+    # O scores
+    display_scores(par_scores, 'O')
 
     # total score
     total_score = sum(hse_scores + fac_scores + shp_scores + hwy_scores
-                      + bch_scores + rod_scores + res_scores)
+                      + bch_scores + rod_scores + res_scores + par_scores)
     print('Total score:', str(total_score))
 
     return total_score
@@ -724,6 +753,7 @@ grid = [
 
 highScores = load_high_scores()
 turn = 0
+
 # main menu
 print('Welcome to Ngee Ann City!')
 print('-------------------------')
@@ -737,6 +767,7 @@ while choice != '0':
     choice = (input('Your choice? '))
 
     if choice == '1':
+        total_score = 0
         print_grid()
         game(highScores)
     elif choice == '2':
