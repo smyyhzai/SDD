@@ -28,8 +28,9 @@ def game(highScores):
     global turn
     global coin
 
-
     if choice != '2':
+        global total_score
+        global coin
         # reset turn when game restart
         turn = 0
         coin = 17
@@ -39,6 +40,7 @@ def game(highScores):
                 grid[row][col] = '   '
 
     while build_choice != '0':
+        
         if coin != 1:
             global total_score
             current_score(total_score)
@@ -101,6 +103,7 @@ def game(highScores):
                 turn = turn - 1
                 save_game(turn)
                 print('Game saved!')
+                break
             elif build_choice == '4':
                 print_current_score()
             # exit game
@@ -583,13 +586,12 @@ def print_current_score():
 def save_game(turn):
     datafile = open('SimpCity.txt', 'w')
     datafile.write(str(turn) + '\n')
-    for row in range(0, 4):
+    for row in range(len(grid)):
         data = ''
-        for col in range(0, 4):
+        for col in range(len(grid[row])):
             data = data + grid[row][col] + ','
         datafile.write(data + '\n')
     datafile.close()
-
 
 # this is a function to read game from SimpCity txt file
 def load_game():
@@ -605,7 +607,7 @@ def load_game():
     for line in datafile:
         line = line.strip('\n')
         datalist = line.split(',')
-        for col in range(0, 4):
+        for col in range(len(grid[row])):
             grid[row][col] = datalist[col]
         row = row+1
     datafile.close()
@@ -757,6 +759,7 @@ print('Welcome to Ngee Ann City!')
 print('-------------------------')
 choice = 1
 while choice != '0':
+    print()
     print('1. Start new game')
     print('2. Load saved game')
     print('3. Show high scores')
