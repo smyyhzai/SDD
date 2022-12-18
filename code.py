@@ -27,7 +27,7 @@ def game(highScores):
     build_choice = 1
     global turn
     global coin
-    total_score = current_score()
+
 
     if choice != '2':
         # reset turn when game restart
@@ -40,6 +40,8 @@ def game(highScores):
 
     while build_choice != '0':
         if coin != 0:
+            global total_score
+            current_score(total_score)
             turn = turn + 1
             coin = 16 - turn 
             #print_grid()
@@ -73,7 +75,9 @@ def game(highScores):
                 second_building_name = 'Road (*)'
 
 
-            print("Turn:  {}  Point:  {}  Coin:  {}".format(turn, total_score, coin))
+            #total_score = current_score()
+            print()
+            print("Turn: {}    Point: {}   Coin: {} ".format(turn, total_score, coin))
             print()
             print("Options:")
             print('--------')
@@ -504,16 +508,10 @@ def display_scores(building_scores, cell):
 
 
 # this is a function to check the current score for every building
-def current_score():
-    bch_scores = []
-    fac_scores = []
-    hse_scores = []
-    shp_scores = []
-    hwy_scores = []
-    rod_scores = []
-    res_scores = []
-    par_scores = []
+def current_score(total_scores):
+
     fac = 0
+    global total_score
 
     # access the grid with the row and col
     for row in range(0, 20):
@@ -556,37 +554,29 @@ def current_score():
     # FAC scores needs to be calculated from the number of FACs
     calc_fac_scores(fac_scores, fac)
 
-    # display scores
-    # HSE scores
-    display_scores(hse_scores, 'HSE')
-
-    # FAC scores
-    display_scores(fac_scores, 'FAC')
-
-    # SHP scores
-    display_scores(shp_scores, 'SHP')
-
-    # HWY scores
-    display_scores(hwy_scores, 'HWY')
-
-    # BCH scores
-    display_scores(bch_scores, 'BCH')
-
-    # * scores
-    display_scores(rod_scores, '*')
-
-    # R scores
-    display_scores(res_scores, 'R')
-
-    # O scores
-    display_scores(par_scores, 'O')
-
     # total score
-    total_score = sum(hse_scores + fac_scores + shp_scores + hwy_scores
-                      + bch_scores + rod_scores + res_scores + par_scores)
-    print('Total score:', str(total_score))
+    total_score = sum(rod_scores + res_scores + par_scores)
+
 
     return total_score
+
+def print_current_score():
+    current_score()
+    # display scores
+    print()
+
+    # * scores
+    display_scores(rod_scores, 'Road')
+
+    # R scores
+    display_scores(res_scores, 'Residential')
+
+    # O scores
+    display_scores(par_scores, 'Park')
+
+    # total score
+    print('Total score:', str(total_score))
+    print()
 
 
 # this is a function to save the game into SimpCity txt file
@@ -658,6 +648,7 @@ def end_of_game(grid, highScores):
     print('Final layout of Ngee Ann City:')
     print_grid()
 
+    global total_score
     total_score = current_score()
 
     for player in highScores:
@@ -753,6 +744,14 @@ grid = [
 
 highScores = load_high_scores()
 turn = 0
+bch_scores = []
+fac_scores = []
+hse_scores = []
+shp_scores = []
+hwy_scores = []
+rod_scores = []
+res_scores = []
+par_scores = []
 
 # main menu
 print('Welcome to Ngee Ann City!')
