@@ -32,18 +32,18 @@ def game(highScores):
     if choice != '2':
         # reset turn when game restart
         turn = 0
-        coin = 16
+        coin = 17
         # reset grid when game restart
         for row in range(len(grid)):
             for col in range(len(grid[row])):
                 grid[row][col] = '   '
 
     while build_choice != '0':
-        if coin != 0:
+        if coin != 1:
             global total_score
             current_score(total_score)
             turn = turn + 1
-            coin = 16 - turn 
+            coin = 17 - turn 
             #print_grid()
             first_building = random.choice(building)
             second_building = random.choice(building)
@@ -102,7 +102,7 @@ def game(highScores):
                 save_game(turn)
                 print('Game saved!')
             elif build_choice == '4':
-                current_score()
+                print_current_score()
             # exit game
             elif build_choice == '0':
                 break
@@ -561,7 +561,7 @@ def current_score(total_scores):
     return total_score
 
 def print_current_score():
-    current_score()
+    current_score(total_score)
     # display scores
     print()
 
@@ -645,11 +645,10 @@ def load_high_scores():
 # this is a function to show the end of game
 def end_of_game(grid, highScores):
     pos = 1
-    print('Final layout of Ngee Ann City:')
-    print_grid()
+
+    print_current_score()
 
     global total_score
-    total_score = current_score()
 
     for player in highScores:
         if player[1] >= total_score:
