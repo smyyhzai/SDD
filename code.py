@@ -105,7 +105,9 @@ def game(highScores):
                 print('Game saved!')
                 break
             elif build_choice == '4':
+                turn = turn -1
                 print_current_score()
+                
             # exit game
             elif build_choice == '0':
                 break
@@ -296,11 +298,11 @@ def check_four_directions(row, col):
 
     if row != 0:
         top = grid[row - 1][col]
-    if row != 3:
+    if row != 19:
         bottom = grid[row + 1][col]
     if col != 0:
         left = grid[row][col - 1]
-    if col != 3:
+    if col != 19:
         right = grid[row][col + 1]
 
     return top, bottom, left, right
@@ -488,13 +490,13 @@ def calc_par_score(par_scores, row, col):
     top, bottom, left, right = check_four_directions(row, col)
     # add 1 point for every unique building adjacent to the park
     if top == "O":
-        par_counts += 1
+        par_counts = par_counts + 1
     if bottom == "O":
-        par_counts += 1
+        par_counts = par_counts + 1
     if left == "O":
-        par_counts += 1
+        par_counts = par_counts + 1
     if right == "O":
-        par_counts += 1
+        par_counts = par_counts + 1
    
     # add score into list
     par_scores.append(par_counts)
