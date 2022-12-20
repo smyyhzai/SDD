@@ -401,26 +401,31 @@ def calc_shp_score(shp_scores, row, col):
     shp_scores.append(len(building_seen))
 
 
-# this is a function to check hwy scores
-def calc_hwy_score(hwy_scores, row, col):
-    # count 1 when a HWY is seen
-    hwy_count = 1
-    # check towards the right side for the row for any HWYs
-    for i in range(3 - col):
+# this is a function to check hwy scores // commercial
+def calc_com_score(com_scores, row, col):
+    """top, bottom, left, right = check_four_directions(row, col)
+    com_count = 0
+    if top == "C" or bottom == "C" or left == "C" or right == "C":
+        com_count += 1"""
+    # count 1 when a commercial (C) is seen
+    com_count = 0
+    # check towards the right side for the row for any Cs
+    for i in range(19 - col):
         next_cell = grid[row][col + i + 1]
-        if next_cell == 'HWY':
-            hwy_count = hwy_count + 1
+        if next_cell == 'C':
+            com_count = com_count + 1
         else:
             break
-    # check towards the left side for the row for any HWYs
+    # check towards the left side for the row for any Cs
     for i in range(col):
         next_cell = grid[row][col - i - 1]
-        if next_cell == 'HWY':
-            hwy_count = hwy_count + 1
+        if next_cell == 'C':
+            com_count = com_count + 1
         else:
             break
     # add score into list
-    hwy_scores.append(hwy_count)
+    com_scores.append(com_count)
+
 
 # this is a function to check rod scores
 # 1 point per connected road
@@ -538,9 +543,9 @@ def current_score(total_scores):
             if cell == 'SHP':
                 calc_shp_score(shp_scores, row, col)
 
-            # to check if grid has HWY
-            if cell == 'HWY':
-                calc_hwy_score(hwy_scores, row, col)
+            # to check if grid has C
+            if cell == 'C':
+                calc_com_score(com_scores, row, col)
 
             # to check if grid has *
             if cell == '*':
@@ -558,7 +563,7 @@ def current_score(total_scores):
     calc_fac_scores(fac_scores, fac)
 
     # total score
-    total_score = sum(rod_scores + res_scores + par_scores)
+    total_score = sum(com_scores + rod_scores + res_scores + par_scores)
 
 
     return total_score
@@ -567,6 +572,9 @@ def print_current_score():
     current_score(total_score)
     # display scores
     print()
+
+    # C scores
+    display_scores(com_scores, 'Commercial')
 
     # * scores
     display_scores(rod_scores, 'Road')
@@ -749,7 +757,7 @@ bch_scores = []
 fac_scores = []
 hse_scores = []
 shp_scores = []
-hwy_scores = []
+com_scores = []
 rod_scores = []
 res_scores = []
 par_scores = []
