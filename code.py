@@ -84,6 +84,8 @@ def game(highScores):
             print()
             print("Turn: {}    Point: {}   Coin: {} ".format(turn, total_score, coin))
             print()
+            print('Options:')
+            print('--------')
             print('1. Build a', first_building_name)
             print('2. Build a', second_building_name)
             print()
@@ -118,9 +120,7 @@ def game(highScores):
                 print('Goodbye, see you again')
                 exit()
             else:
-                turn = turn - 1
-                coin = coin + 1
-                print('Invalid input, please try again.\n')
+                validation_failed()
             # turn = turn - 1 ensure that turn number doesn't change if input is not valid
         else:
             # turn has reached 16, show final layout
@@ -819,27 +819,46 @@ def help():
 
 def settings():
     global grid_size
+    print()
+    print('1. Grid Size')
+    print()
+    print('0. Exit')
     while True:
-        print('1. 5x5')
-        print('2. 10x10')
-        print('3. 15x15')
-        print()
-        print('0. Exit')
-        choice = (input('Your choice? '))
+        choice = (input('Choose option: '))     
         if choice == '1':
-            grid_size = 5
-            break
-        elif choice == '2':
-            grid_size = 10
-            break
-        elif choice == '3':
-            grid_size = 15
-            break
+            print()
+            print('Please choose the grid size for the game.')
+            print('1. 5x5')
+            print('2. 10x10')
+            print('3. 15x15')
+            print()
+            print('0. Back')
+            while True:
+                option = (input('Choose grid size: '))
+                if option == '1':
+                    grid_size = 5
+                    break
+                elif option == '2':
+                    grid_size = 10
+                    break
+                elif option == '3':
+                    grid_size = 15
+                    break
+                elif option == '0':
+                    break
+                else:
+                    print('Invalid option! Please try again.\n')
+                    continue
+            if option == '1' or option == '2' or option == '3':
+                break
+            else:
+                continue
+            
         elif choice == '0':
             break
         else:
+            print('Invalid option! Please try again.\n')
             continue
-
 
 # main program
 
