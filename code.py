@@ -597,11 +597,7 @@ def current_score():
     hse_scores = []
     shp_scores = []
     hwy_scores = []
-    com_scores = []
-    rod_scores = []
-    res_scores = []
-    par_scores = []
-    ind_scores = []
+
     fac = 0
     global row
     global col
@@ -633,6 +629,8 @@ def current_score():
 
     # FAC scores needs to be calculated from the number of FACs
     calc_fac_scores(fac_scores, fac)
+    row = -1
+    col = -1
 
     # display scores
     print()
@@ -821,11 +819,17 @@ grid = [
     ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ',
      '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   '],
 ]
+com_scores = []
+rod_scores = []
+res_scores = []
+par_scores = []
+ind_scores = []
+
 
 highScores = load_high_scores()
 turn = 0
-row = 0
-col = 0
+row = -1
+col = -1
 # main menu
 print('Welcome to Ngee Ann City!')
 print('-------------------------')
