@@ -5,21 +5,29 @@ import random
 # this function prints the grid of the city
 
 
-def print_grid():
-    print('     A   B   C   D   E   F   G   H   I   J   K   L   M   N   O   P   Q   R   S   T  ')
+def print_grid(x):
+    letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T']
+    print('     ', end='')
+    for i in range(x-1):
+        print(letters[i], end='   ')
+    print(letters[x-1])
     count = 0
     row = 0
-    for count in range(1, 21):
-        print('   +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+')
+    for count in range(1, x+1):
+        print('   ' + '+---'*x + '+')
         if count < 10:
-            print('{}  |{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|'.format(count, grid[row][0], grid[row][1], grid[row][2], grid[row][3], grid[row][4], grid[row][5], grid[row][6], grid[row][7], grid[row]
-                                                                                                                                                         [8], grid[row][9], grid[row][10], grid[row][11], grid[row][12], grid[row][13], grid[row][14], grid[row][15], grid[row][16], grid[row][17], grid[row][18], grid[row][19]))
+            print('{}'.format(count), end='  ')
+            for i in range(x):
+                print('|{:^3}'.format(grid[row][i]), end='')
+                                                                                                                                                        
         else:
-            print('{} |{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|{:^3}|'.format(count, grid[row][0], grid[row][1], grid[row][2], grid[row][3], grid[row][4], grid[row][5], grid[row][6], grid[row][7], grid[row]
-                                                                                                                                                        [8], grid[row][9], grid[row][10], grid[row][11], grid[row][12], grid[row][13], grid[row][14], grid[row][15], grid[row][16], grid[row][17], grid[row][18], grid[row][19]))
+            print('{}'.format(count), end=' ')
+            for i in range(x):
+                print('|{:^3}'.format(grid[row][i]), end='')
+        print('|')
         row = row + 1
     # print bottom row
-    print('   +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+')
+    print('   ' + '+---'*x + '+')
 
 
 # this function displays the game options
@@ -138,6 +146,7 @@ def build_buildings(building_choice):
     global coin
     global row
     global col
+    global grid_size
     result = True
 
     # for player to input where they are building at
@@ -222,7 +231,7 @@ def build_buildings(building_choice):
         # allow to put freely on turn 1
         if turn == 1:
             grid[row_number][col_number] = building_choice
-            print_grid()
+            print_grid(grid_size)
         # turn 2 onwards must build orthogonally adjacent to a building
         else:
             up_row = row_number - 1
@@ -246,16 +255,16 @@ def build_buildings(building_choice):
                 # able to build
                 if up_row >= 0 and grid[up_row][up_col] != '   ':
                     grid[row_number][col_number] = building_choice
-                    print_grid()
+                    print_grid(grid_size)
                 elif down_row <= 19 and grid[down_row][down_col] != '   ':
                     grid[row_number][col_number] = building_choice
-                    print_grid()
+                    print_grid(grid_size)
                 elif left_col >= 0 and grid[left_row][left_col] != '   ':
                     grid[row_number][col_number] = building_choice
-                    print_grid()
+                    print_grid(grid_size)
                 elif right_col <= 19 and grid[right_row][right_col] != '   ':
                     grid[row_number][col_number] = building_choice
-                    print_grid()
+                    print_grid(grid_size)
                 else:
                     print('You must build next to existing building\n')
                     turn = turn - 1
@@ -806,6 +815,31 @@ def help():
     print('  Each commercial generates 1 coin per residential adjacent to it.')
     print('•Park (O): Scores 1 point per park adjacent to it.')
     print('•Road (*): Scores 1 point per connected road (*) in the same row.')
+    print()
+
+def settings():
+    global grid_size
+    while True:
+        print('1. 5x5')
+        print('2. 10x10')
+        print('3. 15x15')
+        print()
+        print('0. Exit')
+        choice = (input('Your choice? '))
+        if choice == '1':
+            grid_size = 5
+            break
+        elif choice == '2':
+            grid_size = 10
+            break
+        elif choice == '3':
+            grid_size = 15
+            break
+        elif choice == '0':
+            break
+        else:
+            continue
+
 
 # main program
 
@@ -864,26 +898,29 @@ highScores = load_high_scores()
 turn = 0
 row = -1
 col = -1
+grid_size = 20
 # main menu
 print('Welcome to Ngee Ann City!')
 print('-------------------------')
 choice = 1
 while choice != '0':
+    print()
     print('1. Start new game')
     print('2. Load saved game')
     print('3. Show high scores')
     print('4. Help')
+    print('5. Settings')
     print()
     print('0. Exit')
     choice = (input('Your choice? '))
 
     if choice == '1':
-        print_grid()
+        print_grid(grid_size)
         game(highScores)
     elif choice == '2':
         try:
             load_game()
-            print_grid()
+            print_grid(grid_size)
             game(highScores)
         # to ensure that there is a saved game txt file
         except ValueError:
@@ -892,6 +929,8 @@ while choice != '0':
         display_high_scores(highScores)
     elif choice == '4':
         help()
+    elif choice == '5':
+        settings()
     elif choice == '0':
         print('Goodbye, see you again')
     else:
