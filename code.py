@@ -40,7 +40,8 @@ def game(highScores):
     while build_choice != '0':
         if coin != 1:
             turn = turn + 1
-            coin = 17 - turn 
+            coin = coin - 1
+            add_coin = 0
             #print_grid()
             first_building = random.choice(building)
             second_building = random.choice(building)
@@ -92,18 +93,21 @@ def game(highScores):
             # save game
             elif build_choice == '3':
                 turn = turn - 1
+                coin = coin + 1
                 save_game(turn)
                 print('Game saved!')
                 break
             # see current score
             elif build_choice == '4':
                 turn = turn - 1
+                coin = coin + 1
                 current_score()
             # exit game
             elif build_choice == '0':
                 break
             else:
                 turn = turn - 1
+                coin = coin + 1
                 print('Invalid input, please try again.\n')
             # turn = turn - 1 ensure that turn number doesn't change if input is not valid
         else:
@@ -115,7 +119,9 @@ def game(highScores):
 # this function performs the necessary actions if the validation failed
 def validation_failed():
     global turn
+    global coin
     turn = turn - 1
+    coin = coin + 1
     print('Invalid input, please try again.\n')
 
 
@@ -126,6 +132,8 @@ def build_buildings(building_choice):
                      '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
     global turn
     global coin
+    global row
+    global col
     result = True
 
     # for player to input where they are building at
@@ -229,6 +237,7 @@ def build_buildings(building_choice):
             if grid[row_number][col_number] != '   ':
                 print('There is already a building at {}\n'.format(build))
                 turn = turn - 1
+                coin = coin - 1
             # able to build
             if up_row >= 0 and grid[up_row][up_col] != '   ':
                 grid[row_number][col_number] = building_choice
@@ -245,6 +254,9 @@ def build_buildings(building_choice):
             else:
                 print('You must build next to existing building\n')
                 turn = turn - 1
+                coin = coin + 1
+        row = row_number
+        col = col_number
 
 
 # this is a function to check the number of buildings left after every turn
@@ -280,19 +292,21 @@ def remainding_buildings(grid):
 
 
 # this is a function that checks for adjacency for side buildings
-def check_four_directions(row, col):
+def check_four_directions():
     top = ''
     bottom = ''
     left = ''
     right = ''
+    global row
+    global col
 
     if row != 0:
         top = grid[row - 1][col]
-    if row != 3:
+    if row != 19:
         bottom = grid[row + 1][col]
     if col != 0:
         left = grid[row][col - 1]
-    if col != 3:
+    if col != 19:
         right = grid[row][col + 1]
 
     return top, bottom, left, right
@@ -306,6 +320,7 @@ def calc_bch_score(bch_scores, col):
     # base point is 1
     else:
         bch_scores.append(1)
+    
 
 
 # this is a function to check FAC scores
@@ -415,7 +430,10 @@ def calc_hwy_score(hwy_scores, row, col):
     hwy_scores.append(hwy_count)
 
 # this is a function to check industry scores
-def calc_ind_score(ind_scores, row, col):
+def calc_ind_score(ind_scores):
+    global row
+    global col
+    global coin
     ind_count = 0
     for row in range(0, 20):
         for col in range(0, 20):
@@ -426,52 +444,62 @@ def calc_ind_score(ind_scores, row, col):
     ind_scores.append(ind_count)
     
     # add coins
-    global add_coin
+    global coin
     # checks for adjacency for side buildings
     top, bottom, left, right = check_four_directions(row, col)
-    # add 1 point for every unique building adjacent to the park
+    # add 1 point for every res building adjacent to it
     if top == "R":
-        add_coin = add_coin + 1
+        coin = coin + 1
     if bottom == "R":
-        add_coin = add_coin + 1
+        coin = coin + 1
     if left == "R":
-        add_coin = add_coin + 1
+        coin = coin + 1
     if right == "R":
-        add_coin = add_coin + 1
+        coin = coin + 1
+    
 
             
 
 
 # this is a function to check commerical scores
-def calc_com_score(com_scores, row, col):
-    """top, bottom, left, right = check_four_directions(row, col)
-    com_count = 0
-    if top == "C" or bottom == "C" or left == "C" or right == "C":
-        com_count += 1"""
-    # count 1 when a commercial (C) is seen
-    com_count = 0
-    # check towards the right side for the row for any Cs
-    for i in range(19 - col):
-        next_cell = grid[row][col + i + 1]
-        if next_cell == 'C':
-            com_count = com_count + 1
-        else:
-            break
-    # check towards the left side for the row for any Cs
-    for i in range(col):
-        next_cell = grid[row][col - i - 1]
-        if next_cell == 'C':
-            com_count = com_count + 1
-        else:
-            break
+def calc_com_score(com_scores):
+    global row
+    global col
+    global coin
+    com_counts = 0
+    # checks for adjacency for side buildings
+    top, bottom, left, right = check_four_directions()
+    # add 1 point for every unique building adjacent to the park
+    if top == "C":
+        com_counts = com_counts + 1
+    if bottom == "C":
+        com_counts = com_counts + 1
+    if left == "C":
+        com_counts = com_counts + 1
+    if right == "C":
+        com_counts = com_counts + 1
+   
     # add score into list
-    com_scores.append(com_count)
+    com_scores.append(com_counts)
+
+    # add coins
+    if top == "R":
+        coin = coin + 1
+    if bottom == "R":
+        coin = coin + 1
+    if left == "R":
+        coin = coin + 1
+    if right == "R":
+        coin = coin + 1
+    print(com_scores)
 
 # this is a function to check rod scores
 # 1 point per connected road
 
 
-def calc_rod_score(rod_scores, row, col):
+def calc_rod_score(rod_scores):
+    global row
+    global col
     rod_count = 0
     # check towards the right side
     for i in range(19 - col):
@@ -489,12 +517,15 @@ def calc_rod_score(rod_scores, row, col):
             break
     # add score into list
     rod_scores.append(rod_count)
+    print(rod_scores)
 
 # this is a function to check residential scores
 
 
-def calc_res_score(res_scores, row, col):
-    top, bottom, left, right = check_four_directions(row, col)
+def calc_res_score(res_scores):
+    top, bottom, left, right = check_four_directions()
+    global row
+    global col
     res_counts = 0
     if top == "I" or bottom == "I" or left == "I" or right == "I":
         res_counts += 1
@@ -521,11 +552,14 @@ def calc_res_score(res_scores, row, col):
             res_counts += 2
     # add to score list
     res_scores.append(res_counts)
+    print(res_scores)
 
-def calc_par_score(par_scores, row, col):
+def calc_par_score(par_scores):
     par_counts = 0
+    global row
+    global col
     # checks for adjacency for side buildings
-    top, bottom, left, right = check_four_directions(row, col)
+    top, bottom, left, right = check_four_directions()
     # add 1 point for every unique building adjacent to the park
     if top == "O":
         par_counts = par_counts + 1
@@ -538,6 +572,7 @@ def calc_par_score(par_scores, row, col):
    
     # add score into list
     par_scores.append(par_counts)
+    print(par_scores)
 
 # this is a function to display scores for all buildings
 
@@ -568,32 +603,33 @@ def current_score():
     par_scores = []
     ind_scores = []
     fac = 0
-
+    global row
+    global col
+    print(row)
+    print(col)
     # access the grid with the row and col
-    for row in range(0, 20):
-        for col in range(0, 20):
-            # save whatever is that is on the grid for the row and col into cell
-            cell = grid[row][col]
+    cell = grid[row][col]
 
-            # to check if grid has C
-            if cell == 'C':
-                calc_com_score(com_scores, row, col)
+
+    # to check if grid has C
+    if cell == 'C':
+        calc_com_score(com_scores)
 
             # to check if grid has *
-            if cell == '*':
-                calc_rod_score(rod_scores, row, col)
+    if cell == '*':
+        calc_rod_score(rod_scores)
 
             # to check if grid has R
-            if cell == 'R':
-                calc_res_score(res_scores, row, col)
+    if cell == 'R':
+        calc_res_score(res_scores)
 
             # to check if grid has O
-            if cell == 'O':
-                calc_par_score(par_scores, row, col)
+    if cell == 'O':
+        calc_par_score(par_scores)
 
             # to check if grid has I
-            if cell == 'I':
-                calc_ind_score(ind_scores, row, col)
+    if cell == 'I':
+        calc_ind_score(ind_scores)
 
     # FAC scores needs to be calculated from the number of FACs
     calc_fac_scores(fac_scores, fac)
@@ -788,6 +824,8 @@ grid = [
 
 highScores = load_high_scores()
 turn = 0
+row = 0
+col = 0
 # main menu
 print('Welcome to Ngee Ann City!')
 print('-------------------------')
