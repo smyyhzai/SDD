@@ -202,7 +202,6 @@ def build_buildings(building_choice):
         else:
             validation_failed()
             result = False
-            print('6')
 
     # validation passed, check where the building is supposed to be placed
     if result == True:
