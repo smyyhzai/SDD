@@ -237,24 +237,26 @@ def build_buildings(building_choice):
             if grid[row_number][col_number] != '   ':
                 print('There is already a building at {}\n'.format(build))
                 turn = turn - 1
-                coin = coin - 1
-            # able to build
-            if up_row >= 0 and grid[up_row][up_col] != '   ':
-                grid[row_number][col_number] = building_choice
-                print_grid()
-            elif down_row <= 19 and grid[down_row][down_col] != '   ':
-                grid[row_number][col_number] = building_choice
-                print_grid()
-            elif left_col >= 0 and grid[left_row][left_col] != '   ':
-                grid[row_number][col_number] = building_choice
-                print_grid()
-            elif right_col <= 19 and grid[right_row][right_col] != '   ':
-                grid[row_number][col_number] = building_choice
-                print_grid()
-            else:
-                print('You must build next to existing building\n')
-                turn = turn - 1
                 coin = coin + 1
+            else:
+                # able to build
+                if up_row >= 0 and grid[up_row][up_col] != '   ':
+                    grid[row_number][col_number] = building_choice
+                    print_grid()
+                elif down_row <= 19 and grid[down_row][down_col] != '   ':
+                    grid[row_number][col_number] = building_choice
+                    print_grid()
+                elif left_col >= 0 and grid[left_row][left_col] != '   ':
+                    grid[row_number][col_number] = building_choice
+                    print_grid()
+                elif right_col <= 19 and grid[right_row][right_col] != '   ':
+                    grid[row_number][col_number] = building_choice
+                    print_grid()
+                else:
+                    print('You must build next to existing building\n')
+                    turn = turn - 1
+                    coin = coin + 1
+
         row = row_number
         col = col_number
 
@@ -584,7 +586,10 @@ def calc_par_score(par_scores):
 def display_scores(building_scores, cell):
     output = ''
     # if there is a score for the building, show workings and tabulate total score
-    if len(building_scores) > 0:
+    if len(building_scores) == 1:
+        print('{}: '.format(
+            cell) + str(sum(building_scores)))
+    elif len(building_scores) > 0:
         for i in range(1, len(building_scores)):
             output = output + ' + ' + str(building_scores[i])
         print('{}: '.format(
