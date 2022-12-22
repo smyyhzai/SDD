@@ -82,6 +82,7 @@ def game(highScores):
             print('3. Save game')
             print('4. See score breakdown')
             print('0. Exit to main menu')
+            print('00. Exit game')
             build_choice = (input('Your choice? '))
 
             # first building choice
@@ -102,9 +103,12 @@ def game(highScores):
                 turn = turn - 1
                 coin = coin + 1
                 current_score()
-            # exit game
+            # exit to menu
             elif build_choice == '0':
                 break
+            elif build_choice == '00':
+                print('Goodbye, see you again')
+                exit()
             else:
                 turn = turn - 1
                 coin = coin + 1
@@ -778,6 +782,31 @@ def display_high_scores(scores):
         print('{:>2}. {:<25}{}'.format(i + 1, scores[i][0], scores[i][1]))
     print('-------------------------------')
 
+def help():
+    print('How to Play')
+    print('-----------')
+    print('•This city-building game begins with 16 coins.')
+    print('•In each turn, the player will construct one of two randomly-selected buildings in the 20x20 city.')
+    print('•Each construction cost 1 coin.')
+    print('•For the first building, the player can build anywhere in the city.')
+    print('•For subsequent constructions, the player can only build on squares that are connected to existing buildings.')
+    print('•The other building that was not built is discarded.')
+    print('The game will end when the player runs out of coins.')
+    print()
+    print('Scoring system')
+    print('--------------')
+    print('Each building scores in a different way.') 
+    print('The objective of the game is to build a city that scores as many points as possible.')
+    print('There are 5 types of buildings:')
+    print('•Residential (R): If it is next to an industry (I), then it scores 1 point only.')
+    print('  Otherwise, it scores 1 point for each adjacent residential (R) or commercial (C),')
+    print('  and 2 points for each adjacent park (O).')
+    print('•Industry (I): Scores 1 point per industry in the city.')
+    print('  Each industry generates 1 coin per residential building adjacent to it.')
+    print('•Commercial (C): Scores 1 point per commercial adjacent to it.')
+    print('  Each commercial generates 1 coin per residential adjacent to it.')
+    print('•Park (O): Scores 1 point per park adjacent to it.')
+    print('•Road (*): Scores 1 point per connected road (*) in the same row.')
 
 # main program
 
@@ -844,6 +873,7 @@ while choice != '0':
     print('1. Start new game')
     print('2. Load saved game')
     print('3. Show high scores')
+    print('4. Help')
     print()
     print('0. Exit')
     choice = (input('Your choice? '))
@@ -861,6 +891,8 @@ while choice != '0':
             print('No saved game found')
     elif choice == '3':
         display_high_scores(highScores)
+    elif choice == '4':
+        help()
     elif choice == '0':
         print('Goodbye, see you again')
     else:
