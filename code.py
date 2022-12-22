@@ -479,8 +479,9 @@ def calc_com_score(com_scores):
     if right == "C":
         com_counts = com_counts + 1
    
-    # add score into list
-    com_scores.append(com_counts)
+    if com_counts != 0:
+        # add score into list
+        com_scores.append(com_counts)
 
     # add coins
     if top == "R":
@@ -515,9 +516,9 @@ def calc_rod_score(rod_scores):
             rod_count = rod_count + 1
         else:
             break
-    # add score into list
-    rod_scores.append(rod_count)
-    print(rod_scores)
+    if rod_count != 0:
+        # add score into list
+        rod_scores.append(rod_count)
 
 # this is a function to check residential scores
 
@@ -550,8 +551,10 @@ def calc_res_score(res_scores):
             res_counts += 1
         elif right == "O":
             res_counts += 2
-    # add to score list
-    res_scores.append(res_counts)
+
+    if res_counts != 0:
+        # add to score list
+        res_scores.append(res_counts)
     
 
 def calc_par_score(par_scores):
@@ -570,8 +573,9 @@ def calc_par_score(par_scores):
     if right == "O":
         par_counts = par_counts + 1
    
-    # add score into list
-    par_scores.append(par_counts)
+    if par_counts != 0:
+        # add score into list
+        par_scores.append(par_counts)
     
 
 # this is a function to display scores for all buildings
@@ -601,8 +605,6 @@ def current_score():
     fac = 0
     global row
     global col
-    print(row)
-    print(col)
     # access the grid with the row and col
     cell = grid[row][col]
 
