@@ -450,7 +450,6 @@ def calc_ind_score(ind_scores):
     ind_scores.append(ind_count)
     
     # add coins
-    global coin
     # checks for adjacency for side buildings
     top, bottom, left, right = check_four_directions()
     # add 1 point for every res building adjacent to it
@@ -540,22 +539,22 @@ def calc_res_score(res_scores):
         # check top for R or C
         if top == "R" or top == "C":
             res_counts += 1
-        elif top == "O":
+        if top == "O":
             res_counts += 2
 
         if bottom == "R" or bottom == "C":
             res_counts += 1
-        elif bottom == "O":
+        if bottom == "O":
             res_counts += 2
 
         if left == "R" or left == "C":
             res_counts += 1
-        elif left == "O":
+        if left == "O":
             res_counts += 2
 
         if right == "R" or right == "C":
             res_counts += 1
-        elif right == "O":
+        if right == "O":
             res_counts += 2
 
     if res_counts != 0:
