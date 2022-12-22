@@ -446,7 +446,7 @@ def calc_ind_score(ind_scores):
     # add coins
     global coin
     # checks for adjacency for side buildings
-    top, bottom, left, right = check_four_directions(row, col)
+    top, bottom, left, right = check_four_directions()
     # add 1 point for every res building adjacent to it
     if top == "R":
         coin = coin + 1
@@ -491,7 +491,7 @@ def calc_com_score(com_scores):
         coin = coin + 1
     if right == "R":
         coin = coin + 1
-    print(com_scores)
+    
 
 # this is a function to check rod scores
 # 1 point per connected road
@@ -552,7 +552,7 @@ def calc_res_score(res_scores):
             res_counts += 2
     # add to score list
     res_scores.append(res_counts)
-    print(res_scores)
+    
 
 def calc_par_score(par_scores):
     par_counts = 0
@@ -572,7 +572,7 @@ def calc_par_score(par_scores):
    
     # add score into list
     par_scores.append(par_counts)
-    print(par_scores)
+    
 
 # this is a function to display scores for all buildings
 
@@ -727,7 +727,6 @@ def load_high_scores():
 # this is a function to show the end of game
 def end_of_game(grid, highScores):
     pos = 1
-
     total_score = current_score()
     for player in highScores:
         if player[1] >= total_score:
