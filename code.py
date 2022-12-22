@@ -29,8 +29,6 @@ def game(highScores):
     global coin
 
     if choice != '2':
-        global total_score
-        global coin
         # reset turn when game restart
         turn = 0
         coin = 17
@@ -40,9 +38,7 @@ def game(highScores):
                 grid[row][col] = '   '
 
     while build_choice != '0':
-        
         if coin != 1:
-            global total_score
             turn = turn + 1
             coin = 17 - turn 
             #print_grid()
@@ -75,20 +71,16 @@ def game(highScores):
             elif second_building == '*':
                 second_building_name = 'Road (*)'
 
-
-            #total_score = current_score()
+            total_score = current_score()
             print()
             print("Turn: {}    Point: {}   Coin: {} ".format(turn, total_score, coin))
             print()
-            print("Options:")
-            print('--------')
             print('1. Build a', first_building_name)
             print('2. Build a', second_building_name)
             print()
             print('3. Save game')
-            print('4. Show score breakdown')
+            print('4. See score breakdown')
             print('0. Exit to main menu')
-            print()
             build_choice = (input('Your choice? '))
 
             # first building choice
@@ -103,10 +95,10 @@ def game(highScores):
                 save_game(turn)
                 print('Game saved!')
                 break
+            # see current score
             elif build_choice == '4':
-                turn = turn -1
-                print_current_score()
-                
+                turn = turn - 1
+                current_score()
             # exit game
             elif build_choice == '0':
                 break
@@ -297,11 +289,11 @@ def check_four_directions(row, col):
 
     if row != 0:
         top = grid[row - 1][col]
-    if row != 19:
+    if row != 3:
         bottom = grid[row + 1][col]
     if col != 0:
         left = grid[row][col - 1]
-    if col != 19:
+    if col != 3:
         right = grid[row][col + 1]
 
     return top, bottom, left, right
@@ -402,7 +394,56 @@ def calc_shp_score(shp_scores, row, col):
     shp_scores.append(len(building_seen))
 
 
-# this is a function to check hwy scores // commercial
+# this is a function to check hwy scores
+def calc_hwy_score(hwy_scores, row, col):
+    # count 1 when a HWY is seen
+    hwy_count = 1
+    # check towards the right side for the row for any HWYs
+    for i in range(3 - col):
+        next_cell = grid[row][col + i + 1]
+        if next_cell == 'HWY':
+            hwy_count = hwy_count + 1
+        else:
+            break
+    # check towards the left side for the row for any HWYs
+    for i in range(col):
+        next_cell = grid[row][col - i - 1]
+        if next_cell == 'HWY':
+            hwy_count = hwy_count + 1
+        else:
+            break
+    # add score into list
+    hwy_scores.append(hwy_count)
+
+# this is a function to check industry scores
+def calc_ind_score(ind_scores, row, col):
+    ind_count = 0
+    for row in range(0, 20):
+        for col in range(0, 20):
+            cell = grid[row][col]
+            if cell == 'I':
+                ind_count = ind_count + 1
+    ind_scores.clear()
+    ind_scores.append(ind_count)
+    
+    # add coins
+    global add_coin
+    # checks for adjacency for side buildings
+    top, bottom, left, right = check_four_directions(row, col)
+    # add 1 point for every unique building adjacent to the park
+    if top == "R":
+        add_coin = add_coin + 1
+    if bottom == "R":
+        add_coin = add_coin + 1
+    if left == "R":
+        add_coin = add_coin + 1
+    if right == "R":
+        add_coin = add_coin + 1
+
+            
+
+
+# this is a function to check commerical scores
 def calc_com_score(com_scores, row, col):
     """top, bottom, left, right = check_four_directions(row, col)
     com_count = 0
@@ -426,7 +467,6 @@ def calc_com_score(com_scores, row, col):
             break
     # add score into list
     com_scores.append(com_count)
-
 
 # this is a function to check rod scores
 # 1 point per connected road
@@ -517,32 +557,24 @@ def display_scores(building_scores, cell):
 
 
 # this is a function to check the current score for every building
-def current_score(total_scores):
-
+def current_score():
+    bch_scores = []
+    fac_scores = []
+    hse_scores = []
+    shp_scores = []
+    hwy_scores = []
+    com_scores = []
+    rod_scores = []
+    res_scores = []
+    par_scores = []
+    ind_scores = []
     fac = 0
-    global total_score
 
     # access the grid with the row and col
     for row in range(0, 20):
         for col in range(0, 20):
             # save whatever is that is on the grid for the row and col into cell
             cell = grid[row][col]
-
-            # to check if grid has BCH
-            if cell == "BCH":
-                calc_bch_score(bch_scores, col)
-
-            # to check if grid has FAC
-            if cell == 'FAC':
-                fac = fac + 1
-
-            # to check if grid has HSE
-            if cell == 'HSE':
-                calc_hse_score(hse_scores, row, col)
-
-            # to check if grid has SHP
-            if cell == 'SHP':
-                calc_shp_score(shp_scores, row, col)
 
             # to check if grid has C
             if cell == 'C':
@@ -560,47 +592,53 @@ def current_score(total_scores):
             if cell == 'O':
                 calc_par_score(par_scores, row, col)
 
+            # to check if grid has I
+            if cell == 'I':
+                calc_ind_score(ind_scores, row, col)
+
     # FAC scores needs to be calculated from the number of FACs
     calc_fac_scores(fac_scores, fac)
 
-    # total score
-    total_score = sum(com_scores + rod_scores + res_scores + par_scores)
-
-
-    return total_score
-
-def print_current_score():
-    current_score(total_score)
     # display scores
     print()
+    print('Score breakdown')
+    print('---------------')
 
-    # C scores
-    display_scores(com_scores, 'Commercial')
-
-    # * scores
-    display_scores(rod_scores, 'Road')
 
     # R scores
     display_scores(res_scores, 'Residential')
 
+    # I scores
+    display_scores(ind_scores, 'Industry')
+
+    # C scores
+    display_scores(com_scores, 'Commercial')
+
     # O scores
     display_scores(par_scores, 'Park')
 
+    # * scores
+    display_scores(rod_scores, 'Road')
+
     # total score
-    print('Total score:', str(total_score))
+    total_score = sum(res_scores + ind_scores + com_scores + par_scores + rod_scores)
     print()
+    print('Total score:', str(total_score))
+
+    return total_score
 
 
 # this is a function to save the game into SimpCity txt file
 def save_game(turn):
     datafile = open('SimpCity.txt', 'w')
     datafile.write(str(turn) + '\n')
-    for row in range(len(grid)):
+    for row in range(0, 4):
         data = ''
-        for col in range(len(grid[row])):
+        for col in range(0, 4):
             data = data + grid[row][col] + ','
         datafile.write(data + '\n')
     datafile.close()
+
 
 # this is a function to read game from SimpCity txt file
 def load_game():
@@ -616,7 +654,7 @@ def load_game():
     for line in datafile:
         line = line.strip('\n')
         datalist = line.split(',')
-        for col in range(len(grid[row])):
+        for col in range(0, 4):
             grid[row][col] = datalist[col]
         row = row+1
     datafile.close()
@@ -657,10 +695,7 @@ def load_high_scores():
 def end_of_game(grid, highScores):
     pos = 1
 
-    print_current_score()
-
-    global total_score
-
+    total_score = current_score()
     for player in highScores:
         if player[1] >= total_score:
             pos = pos + 1
@@ -754,21 +789,11 @@ grid = [
 
 highScores = load_high_scores()
 turn = 0
-bch_scores = []
-fac_scores = []
-hse_scores = []
-shp_scores = []
-com_scores = []
-rod_scores = []
-res_scores = []
-par_scores = []
-
 # main menu
 print('Welcome to Ngee Ann City!')
 print('-------------------------')
 choice = 1
 while choice != '0':
-    print()
     print('1. Start new game')
     print('2. Load saved game')
     print('3. Show high scores')
