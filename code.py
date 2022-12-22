@@ -43,7 +43,6 @@ def game(highScores):
         
         if coin != 1:
             global total_score
-            current_score(total_score)
             turn = turn + 1
             coin = 17 - turn 
             #print_grid()
@@ -778,7 +777,6 @@ while choice != '0':
     choice = (input('Your choice? '))
 
     if choice == '1':
-        total_score = 0
         print_grid()
         game(highScores)
     elif choice == '2':
