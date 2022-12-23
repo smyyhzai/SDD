@@ -831,6 +831,7 @@ def settings():
             print('1. 5x5')
             print('2. 10x10')
             print('3. 15x15')
+            print('4. 20x20')
             print()
             print('0. Back')
             while True:
@@ -844,12 +845,15 @@ def settings():
                 elif option == '3':
                     grid_size = 15
                     break
+                elif option == '4':
+                    grid_size = 20
+                    break
                 elif option == '0':
                     break
                 else:
                     print('Invalid option! Please try again.\n')
                     continue
-            if option == '1' or option == '2' or option == '3':
+            if option == '1' or option == '2' or option == '3' or option == '4':
                 break
             else:
                 continue
