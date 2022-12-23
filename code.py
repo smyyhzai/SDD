@@ -749,6 +749,7 @@ def load_high_scores():
 def end_of_game(grid, highScores):
     pos = 1
     total_score = current_score()
+    print_score(total_score, res_scores, ind_scores, com_scores, par_scores, rod_scores)
     for player in highScores:
         if player[1] >= total_score:
             pos = pos + 1
