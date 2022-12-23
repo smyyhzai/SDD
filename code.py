@@ -112,7 +112,7 @@ def game(highScores):
             elif build_choice == '4':
                 turn = turn - 1
                 coin = coin + 1
-                current_score()
+                print_score(total_score, res_scores, ind_scores, com_scores, par_scores, rod_scores)
             # exit to menu
             elif build_choice == '0':
                 break
@@ -650,6 +650,12 @@ def current_score():
     row = -1
     col = -1
 
+    # total score
+    total_score = sum(res_scores + ind_scores + com_scores + par_scores + rod_scores)
+
+    return total_score
+
+def print_score(total_score, res_scores, ind_scores, com_scores, par_scores, rod_scores):
     # display scores
     print()
     print('Score breakdown')
@@ -675,9 +681,6 @@ def current_score():
     total_score = sum(res_scores + ind_scores + com_scores + par_scores + rod_scores)
     print()
     print('Total score:', str(total_score))
-
-    return total_score
-
 
 # this is a function to save the game into SimpCity txt file
 def save_game(turn):
