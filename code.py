@@ -450,17 +450,9 @@ def calc_ind_score(ind_scores):
     global col
     global coin
     ind_count = 0
-    for row in range(0, 20):
-        for col in range(0, 20):
-            cell = grid[row][col]
-            if cell == 'I':
-                ind_count = ind_count + 1
-    ind_scores.clear()
-    ind_scores.append(ind_count)
-    
-    # add coins
     # checks for adjacency for side buildings
     top, bottom, left, right = check_four_directions()
+        # add coins
     # add 1 point for every res building adjacent to it
     if top == "R":
         coin = coin + 1
@@ -470,6 +462,13 @@ def calc_ind_score(ind_scores):
         coin = coin + 1
     if right == "R":
         coin = coin + 1
+    for row in range(0, 20):
+        for col in range(0, 20):
+            cell = grid[row][col]
+            if cell == 'I':
+                ind_count = ind_count + 1
+    ind_scores.clear()
+    ind_scores.append(ind_count)
     
 
             
