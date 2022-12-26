@@ -38,14 +38,6 @@ def game(highScores):
     global turn
     global coin
 
-    if choice != '2':
-        # reset turn when game restart
-        turn = 0
-        coin = 17
-        # reset grid when game restart
-        for row in range(len(grid)):
-            for col in range(len(grid[row])):
-                grid[row][col] = '   '
 
     while build_choice != '0':
         if coin != 1:
@@ -808,6 +800,7 @@ def display_high_scores(scores):
     for i in range(len(scores)):
         print('{:>2}. {:<25}{}'.format(i + 1, scores[i][0], scores[i][1]))
     print('-------------------------------')
+    print()
 
 def help():
     print('How to Play')
@@ -963,6 +956,14 @@ while choice != '0':
     choice = (input('Your choice? '))
 
     if choice == '1':
+        # reset turn when game restart
+        turn = 0
+        coin = 17
+        # reset grid when game restart
+        for row in range(len(grid)):
+            for col in range(len(grid[row])):
+                grid[row][col] = '   '
+
         print_grid(grid_size)
         game(highScores)
     elif choice == '2':
@@ -974,7 +975,14 @@ while choice != '0':
         except ValueError:
             print('No saved game found')
     elif choice == '3':
+        enter = ''
+        os.system('cls')
         display_high_scores(highScores)
+        enter = (input('Click enter to resume game.'))
+        os.system('cls')
+
+
+        
     elif choice == '4':
         os.system('cls')
         help()
