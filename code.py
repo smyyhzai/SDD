@@ -54,39 +54,43 @@ def game(highScores):
             if first_building == 'R':
                 first_building_name = 'Residential (R)'
             elif first_building == 'I':
-                first_building_name = 'Industry (I)'
+                first_building_name = 'Industry (I)   '
             elif first_building == 'C':
-                first_building_name = 'Commercial (C)'
+                first_building_name = 'Commercial (C) '
             elif first_building == 'O':
-                first_building_name = 'Park (O)'
+                first_building_name = 'Park (O)       '
             elif first_building == '*':
-                first_building_name = 'Road (*)'
+                first_building_name = 'Road (*)       '
 
             if second_building == 'R':
                 second_building_name = 'Residential (R)'
             elif second_building == 'I':
-                second_building_name = 'Industry (I)'
+                second_building_name = 'Industry (I)   '
             elif second_building == 'C':
-                second_building_name = 'Commercial (C)'
+                second_building_name = 'Commercial (C) '
             elif second_building == 'O':
-                second_building_name = 'Park (O)'
+                second_building_name = 'Park (O)       '
             elif second_building == '*':
-                second_building_name = 'Road (*)'
+                second_building_name = 'Road (*)       '
 
             total_score = current_score()
+
+
+            print(' ______________________________________________ ')
+            print("|     Turn: {}      Point: {}     Coin: {}       |".format(turn, total_score, coin))
+            print('|----------------------------------------------|')
+            print('| Options:                                     |')
+            print('|  1. Build a {}                  |'.format(first_building_name)     )
+            print('|  2. Build a {}                  |'.format(second_building_name)     )
+            print('|                                              |')
+            print('|  3. Save game                                |')
+            print('|  4. See score breakdown                      |')
+            print('|  0. Exit to main menu                        |')
+            print('|  00. Exit game                               |')
+            print('|______________________________________________|')
             print()
-            print("Turn: {}    Point: {}   Coin: {} ".format(turn, total_score, coin))
-            print()
-            print('Options:')
-            print('--------')
-            print('1. Build a', first_building_name)
-            print('2. Build a', second_building_name)
-            print()
-            print('3. Save game')
-            print('4. See score breakdown')
-            print('0. Exit to main menu')
-            print('00. Exit game')
             build_choice = (input('Your choice? '))
+
 
             # first building choice
             if build_choice == '1':
@@ -952,15 +956,18 @@ while choice != '0':
 /_/|_/\_, /\__/\__/ /_/ |_/_//_/_//_/  \___/_/\__/\_, / 
      /___/                                       /___/  
     """)
-    print('       Menu        ')
-    print('-------------------')
-    print('1. Start new game')
-    print('2. Load saved game')
-    print('3. Show high scores')
-    print('4. Help')
-    print('5. Settings')
+    print(' _______________________ ')
+    print('| x       Menu          |')
+    print('|-----------------------|')
+    print('| 1. Start new game     |')
+    print('| 2. Load saved game    |')
+    print('| 3. Show high scores   |')
+    print('| 4. Help               |')
+    print('| 5. Settings           |')
+    print('|                       |')
+    print('| 0. Exit               |')
+    print('|_______________________|')
     print()
-    print('0. Exit')
     choice = (input('Your choice? '))
 
     if choice == '1':
