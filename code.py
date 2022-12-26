@@ -943,9 +943,17 @@ os.system('cls')
 choice = 1
 while choice != '0':
 
-    print('Welcome to Ngee Ann City!')
-    print('-------------------------')
-    print()
+    #print('Welcome to Ngee Ann City!')
+    #print('-------------------------')
+    print(r"""
+   _  __               ___               ______ __      
+  / |/ /__ ____ ___   / _ | ___  ___    / ___(_) /___ __
+ /    / _ `/ -_) -_) / __ |/ _ \/ _ \  / /__/ / __/ // /
+/_/|_/\_, /\__/\__/ /_/ |_/_//_/_//_/  \___/_/\__/\_, / 
+     /___/                                       /___/  
+    """)
+    print('       Menu        ')
+    print('-------------------')
     print('1. Start new game')
     print('2. Load saved game')
     print('3. Show high scores')
