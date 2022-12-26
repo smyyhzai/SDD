@@ -1,11 +1,13 @@
 
 import random
-
+import os
+#os.system('cls')
 
 # this function prints the grid of the city
 
 
 def print_grid(x):
+    os.system('cls')
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T']
     print('     ', end='')
     for i in range(x-1):
@@ -49,8 +51,7 @@ def game(highScores):
         if coin != 1:
             turn = turn + 1
             coin = coin - 1
-            add_coin = 0
-            #print_grid()
+            #print_grid(grid_size)
             first_building = random.choice(building)
             second_building = random.choice(building)
             # ensure that first_building and second_building is not the same
@@ -103,6 +104,7 @@ def game(highScores):
                 build_buildings(second_building)
             # save game
             elif build_choice == '3':
+                os.system('cls')
                 turn = turn - 1
                 coin = coin + 1
                 save_game(turn)
@@ -110,13 +112,20 @@ def game(highScores):
                 break
             # see current score
             elif build_choice == '4':
+                os.system('cls')
                 turn = turn - 1
                 coin = coin + 1
+                enter = ''
                 print_score(total_score, res_scores, ind_scores, com_scores, par_scores, rod_scores)
+                enter = (input('Click enter to resume game.'))
+                os.system('cls')
+                print_grid(grid_size)
             # exit to menu
             elif build_choice == '0':
+                os.system('cls')
                 break
             elif build_choice == '00':
+                os.system('cls')
                 print('Goodbye, see you again')
                 exit()
             else:
@@ -134,7 +143,10 @@ def validation_failed():
     global coin
     turn = turn - 1
     coin = coin + 1
+    #os.system('cls')
+    print_grid(grid_size)
     print('Invalid input, please try again.\n')
+
 
 
 # this function validates the building input and build the building accordingly
@@ -248,6 +260,7 @@ def build_buildings(building_choice):
 
             # check if cell has building already
             if grid[row_number][col_number] != '   ':
+                print_grid(grid_size)
                 print('There is already a building at {}\n'.format(build))
                 turn = turn - 1
                 coin = coin + 1
@@ -686,9 +699,10 @@ def print_score(total_score, res_scores, ind_scores, com_scores, par_scores, rod
 def save_game(turn):
     datafile = open('SimpCity.txt', 'w')
     datafile.write(str(turn) + '\n')
-    for row in range(0, 4):
+    datafile.write(str(coin) + '\n')
+    for row in range(0, 20):
         data = ''
-        for col in range(0, 4):
+        for col in range(0, 20):
             data = data + grid[row][col] + ','
         datafile.write(data + '\n')
     datafile.close()
@@ -697,6 +711,7 @@ def save_game(turn):
 # this is a function to read game from SimpCity txt file
 def load_game():
     global turn
+    global coin
     # check if file is available
     datafile = open('SimpCity.txt', 'a')
     datafile.close()
@@ -704,11 +719,12 @@ def load_game():
     # read game from file
     datafile = open('SimpCity.txt', 'r')
     turn = int(datafile.readline())
+    coin = int(datafile.readline())
     row = 0
     for line in datafile:
         line = line.strip('\n')
         datalist = line.split(',')
-        for col in range(0, 4):
+        for col in range(0, 20):
             grid[row][col] = datalist[col]
         row = row+1
     datafile.close()
@@ -822,14 +838,16 @@ def help():
 
 def settings():
     global grid_size
-    print()
+    os.system('cls')
+    print('Settings')
+    print('--------')
     print('1. Grid Size')
     print()
     print('0. Exit')
     while True:
         choice = (input('Choose option: '))     
         if choice == '1':
-            print()
+            os.system('cls')
             print('Please choose the grid size for the game.')
             print('1. 5x5')
             print('2. 10x10')
@@ -857,6 +875,8 @@ def settings():
                     print('Invalid option! Please try again.\n')
                     continue
             if option == '1' or option == '2' or option == '3' or option == '4':
+                os.system('cls')
+                print('Grid size updated to {}x{}!'.format(grid_size,grid_size))
                 break
             else:
                 continue
@@ -926,10 +946,12 @@ row = -1
 col = -1
 grid_size = 20
 # main menu
-print('Welcome to Ngee Ann City!')
-print('-------------------------')
+os.system('cls')
 choice = 1
 while choice != '0':
+
+    print('Welcome to Ngee Ann City!')
+    print('-------------------------')
     print()
     print('1. Start new game')
     print('2. Load saved game')
@@ -954,10 +976,13 @@ while choice != '0':
     elif choice == '3':
         display_high_scores(highScores)
     elif choice == '4':
+        os.system('cls')
         help()
     elif choice == '5':
+        os.system('cls')
         settings()
     elif choice == '0':
         print('Goodbye, see you again')
     else:
+        os.system('cls')
         print('Invalid option, please try again')
