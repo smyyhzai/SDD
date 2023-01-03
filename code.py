@@ -1,6 +1,7 @@
 
 import random
 import os
+import time
 #os.system('cls')
 
 # this function prints the grid of the city
@@ -988,7 +989,8 @@ while choice != '0':
             game(highScores)
         # to ensure that there is a saved game txt file
         except ValueError:
-            print('No saved game found')
+            print('No saved game found. Please start a new game.')
+            time.sleep(3)
     elif choice == '3':
         enter = ''
         os.system('cls')
