@@ -1001,6 +1001,8 @@ while choice != '0':
     elif choice == '4':
         os.system('cls')
         help()
+        enter = (input('Click enter to return to main menu.'))
+        os.system('cls')
     elif choice == '5':
         os.system('cls')
         settings()
