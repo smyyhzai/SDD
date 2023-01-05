@@ -2,6 +2,7 @@
 import random
 import os
 import time
+
 #os.system('cls')
 
 # this function prints the grid of the city
@@ -789,6 +790,9 @@ def end_of_game(grid, highScores):
         save_high_scores(highScores)
         # show high scores
         display_high_scores(highScores)
+        enter = (input('Click enter to return to main menu.'))
+        os.system('cls')
+
 
     else:
         print('Your score is ', total_score)
@@ -997,9 +1001,6 @@ while choice != '0':
         display_high_scores(highScores)
         enter = (input('Click enter to resume game.'))
         os.system('cls')
-
-
-        
     elif choice == '4':
         os.system('cls')
         help()
@@ -1009,6 +1010,7 @@ while choice != '0':
         os.system('cls')
         settings()
     elif choice == '0':
+        os.system('cls')
         print('Goodbye, see you again')
     else:
         os.system('cls')
